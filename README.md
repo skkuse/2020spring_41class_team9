@@ -1,6 +1,6 @@
 # SE TEAM9
 
-### how to run
-please check [here](src/MODU/README.md)
+### How to Run (test server)
+please check [here](src/README.md)
 
 ### TODO WORK
