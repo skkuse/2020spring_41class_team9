@@ -22,6 +22,14 @@ def get_json_from(json, setting):
         error_msg = "Error occured while loading {}.json.".format(json)
         raise ImproperlyConfigured(error_msg)
 
+if os.getenv('MODU_PRODUCTION') is not None:
+    MODU_PRODUCTION = True
+    print('Production mode activated.')
+    print(os.getenv('MODU_PRODUCTION'))
+else:
+    MODU_PRODUCTION = False
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -29,12 +37,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-with open(os.path.join(BASE_DIR, 'settings/secrets.json')) as f:
-    secrets = json.loads(f.read())
-SECRET_KEY = get_json_from(secrets, 'DJANGO_SECRET_KEY')
+if MODU_PRODUCTION:
+    SECRET_KEY = os.getenv('MODU_SECRET_KEY')
+    assert SECRET_KEY is not 'None'
+else:
+    with open(os.path.join(BASE_DIR, 'settings/secrets.json')) as f:
+        secrets = json.loads(f.read())
+    SECRET_KEY = get_json_from(secrets, 'DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = not MODU_PRODUCTION
 
 ALLOWED_HOSTS = []
 
@@ -87,16 +99,35 @@ WSGI_APPLICATION = 'MODU.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 database_filename = (os.path.join(BASE_DIR, 'settings/database.json'))
-with open(database_filename) as file:
-    db_settings = json.loads(file.read())
+
+if MODU_PRODUCTION:
+    MODU_DB_NAME = os.getenv('MARIADB_DBNAME')
+    MODU_DB_USER = os.getenv('MARIADB_USERNAME')
+    MODU_DB_PASSWORD = os.getenv('MARIADB_PW')
+    MODU_DB_HOST = os.getenv('MARIADB_HOST')
+    MODU_DB_PORT = os.getenv('MARIADB_PORT')
+    assert MODU_DB_NAME is not 'None'
+    assert MODU_DB_USER is not 'None'
+    assert MODU_DB_PASSWORD is not 'None'
+    assert MODU_DB_HOST is not 'None'
+    assert MODU_DB_PORT is not 'None'
+else:
+    with open(database_filename) as file:
+        db_settings = json.loads(file.read())
+    MODU_DB_NAME = get_json_from(db_settings, 'MARIADB_DBNAME')
+    MODU_DB_USER = get_json_from(db_settings, 'MARIADB_USERNAME')
+    MODU_DB_PASSWORD = get_json_from(db_settings, 'MARIADB_PW')
+    MODU_DB_HOST = get_json_from(db_settings, 'MARIADB_HOST')
+    MODU_DB_PORT = get_json_from(db_settings, 'MARIADB_PORT')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': get_json_from(db_settings, 'MARIADB_DBNAME'),
-        'USER': get_json_from(db_settings, 'MARIADB_USERNAME'),
-        'PASSWORD': get_json_from(db_settings, 'MARIADB_PW'),
-        'HOST': get_json_from(db_settings, 'MARIADB_HOST'),
-        'PORT': get_json_from(db_settings, 'MARIADB_PORT'),
+        'NAME': MODU_DB_NAME,
+        'USER': MODU_DB_USER,
+        'PASSWORD': MODU_DB_PASSWORD,
+        'HOST': MODU_DB_HOST,
+        'PORT': MODU_DB_PORT,
     }
 }
 
