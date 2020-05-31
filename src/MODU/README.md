@@ -1,8 +1,8 @@
-# How to Run
+# How to Run (test server)
 
 ### 0. Prerequisite
 - `mariaDB`
-- `python` 3.7 or newer, with `pip` and `virtualenvwrapper`
+- `python` 3.7 or newer, with `pip` and `venv`
 
 ### 1. Create setting files
 1) Write down secret keys in `./settings/secrets.json`
