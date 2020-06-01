@@ -60,8 +60,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'auth.apps.AuthConfig'
 ]
 
 # Middleware framework
@@ -162,3 +160,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = 'static/'
 STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
+
+# Firebase
+import firebase_admin
+from firebase_admin import credentials
+
+fb_cred = credentials.Certificate("settings/firebase-cert.json")
+firebase_app = firebase_admin.initialize_app(fb_cred)
