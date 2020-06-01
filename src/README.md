@@ -1,10 +1,10 @@
 # How to Run (test server)
 
-### 0. Prerequisite
-- `mariaDB`
-- `python` 3.7 or newer, with `pip` and `venv`
+## 0. Prerequisite
+- [MariaDB](https://mariadb.org/)
+- [python](https://www.python.org/) 3.7 or newer, with `pip` and `venv`
 
-### 1. Create setting files
+## 1. Create setting files
 1) Write down secret keys in `./settings/secrets.json`
 ``` json
 {
@@ -22,7 +22,7 @@
 }
 ```
 
-### 2. Setup virtual environment
+## 2. Setup virtual environment
 1) Create virtual environment on `./env`  
 ex) on Windows cmd
 ``` cmd
@@ -36,14 +36,14 @@ activate
 cd ../..
 ```
 
-### 3. Install required packages
+## 3. Install required packages
 In virutal environment, install required packages from ./requirements.txt  
 ex) on Windows cmd
 ``` cmd
 py -m pip install -r requirements.txt
 ```
 
-### 4. Migrate django
+## 4. Migrate django
 In virutal environment, migrate django  
 ex) on Windows cmd
 ``` cmd
@@ -51,7 +51,7 @@ py manage.py migrate
 py manage.py makemigrations
 ```
 
-### 5. Run server
+## 5. Run server
 In virutal environment, run server  
 ex) on Windows cmd
 ``` cmd

@@ -48,7 +48,11 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = not MODU_PRODUCTION
 
-ALLOWED_HOSTS = []
+if os.getenv('ALLOWED_HOSTS') != None:
+    ALLOWED_HOSTS = [ os.getenv('ALLOWED_HOST') ]
+else:
+    ALLOWED_HOSTS = []
+
 
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
