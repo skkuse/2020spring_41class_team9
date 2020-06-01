@@ -22,7 +22,7 @@ def get_json_from(json, setting):
         error_msg = "Error occured while loading {}.json.".format(json)
         raise ImproperlyConfigured(error_msg)
 
-if os.getenv('MODU_PRODUCTION') is not None:
+if os.getenv('MODU_PRODUCTION') != None:
     MODU_PRODUCTION = True
     print('Production mode activated.')
     print(os.getenv('MODU_PRODUCTION'))
@@ -39,7 +39,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 if MODU_PRODUCTION:
     SECRET_KEY = os.getenv('MODU_SECRET_KEY')
-    assert SECRET_KEY is not 'None'
+    assert SECRET_KEY != 'None'
 else:
     with open(os.path.join(BASE_DIR, 'settings/secrets.json')) as f:
         secrets = json.loads(f.read())
@@ -106,11 +106,11 @@ if MODU_PRODUCTION:
     MODU_DB_PASSWORD = os.getenv('MARIADB_PW')
     MODU_DB_HOST = os.getenv('MARIADB_HOST')
     MODU_DB_PORT = os.getenv('MARIADB_PORT')
-    assert MODU_DB_NAME is not 'None'
-    assert MODU_DB_USER is not 'None'
-    assert MODU_DB_PASSWORD is not 'None'
-    assert MODU_DB_HOST is not 'None'
-    assert MODU_DB_PORT is not 'None'
+    assert MODU_DB_NAME != 'None'
+    assert MODU_DB_USER != 'None'
+    assert MODU_DB_PASSWORD != 'None'
+    assert MODU_DB_HOST != 'None'
+    assert MODU_DB_PORT != 'None'
 else:
     with open(database_filename) as file:
         db_settings = json.loads(file.read())
