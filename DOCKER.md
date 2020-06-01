@@ -6,7 +6,12 @@
 - https reverse proxy (such as [`nginx`](https://nginx.org/), [`haproxy`](http://www.haproxy.org/), [`envoy`](https://www.envoyproxy.io/) etc.)
 
 ## How to use this image
-### Start a `modu` webserver instance
+### Pull image from github package
+``` bash
+$ docker pull docker.pkg.github.com/skkuse/2020spring_41class_team9/modu:tag
+```
+
+### Run container
 ``` bash
 $ docker run --name modu-server-name            \
     -e SECRET_KEY="django-secret-key"           \
@@ -16,7 +21,7 @@ $ docker run --name modu-server-name            \
     -e MARIADB_HOST="mariadb-host-address"      \
     -e MARIADB_PORT="mariadb-port"              \
     -p port-to-bind:8086                        \
-    -d modu:tag
+    -d docker.pkg.github.com/skkuse/2020spring_41class_team9/modu:tag
 ```
 
 ### Environment Variables
