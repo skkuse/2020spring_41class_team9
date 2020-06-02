@@ -14,6 +14,6 @@ ENV         MODU_PRODUCTION = "True"
 
 EXPOSE      8086
 
-ENTRYPOINT  python manage.py migrate \
-            && python makemigrations \
+ENTRYPOINT  python manage.py makemigrations \
+            && python manage.py migrate \
             && gunicorn --bind=0.0.0.0:8086 MODU.wsgi
