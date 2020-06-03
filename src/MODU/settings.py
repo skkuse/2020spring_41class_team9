@@ -162,3 +162,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# Firebase REST API setting
+if MODU_PRODUCTION:
+    FIREBASE_API_KEY = os.getenv('FIREBASE_API_KEY')
+    assert FIREBASE_API_KEY != 'None'
+else:
+    with open(os.path.join(BASE_DIR, 'settings/secrets.json')) as f:
+        secrets = json.loads(f.read())
+    FIREBASE_API_KEY = get_json_from(secrets, 'FIREBASE_API_KEY')
