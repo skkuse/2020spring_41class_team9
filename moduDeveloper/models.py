@@ -85,4 +85,12 @@ class Developer(models.Model):
     # Methods
     def __str__(self):
         """String for representing the Developer object in Developer Page."""
-        return self.portfolio
+        return "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n" .format(
+            self.profile_image, 
+            self.portfolio,
+            self.project,
+            self.receive_assessment,
+            self.write_assessment,
+            self.follow,
+            self.favorite,
+            self.invite)
