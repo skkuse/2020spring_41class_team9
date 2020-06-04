@@ -35,7 +35,7 @@ class Meta:
     ordering = ['sent_time']
 
 def __str__(self):
-    return "".format(
+    return "{}\n{}\n{}\n".format(
         self.comment_text,
         self.writer,
         self.sent_time
