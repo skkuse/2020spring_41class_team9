@@ -41,7 +41,7 @@ class Assessment(models.Model):
 
     text = models.TextField(
         verbose_name = 'assessment text',
-        max_length=100
+        max_length = 100
         )
 
     # Metadata
@@ -50,6 +50,13 @@ class Assessment(models.Model):
 
     # Methods
     def __str__(self):
-        return self.target
-
-        
+        return "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n" .format(
+            self.target, 
+            self.writter, 
+            self.project, 
+            self.star1, 
+            self.star2, 
+            self.star3, 
+            self.star4, 
+            self.text
+        )
