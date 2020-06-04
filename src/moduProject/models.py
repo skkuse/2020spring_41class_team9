@@ -93,11 +93,11 @@ class Project(models.Model):
     )
 
     #Project-Have-Comment
-    comment = models.ForeignKey(
+    cID = models.ForeignKey(
         'Comment',
         on_delete=models.CASCADE,
-        related_name='developers',
-        related_query_name='developer'
+        related_name='projects',
+        related_query_name='project'
     )
 
     # Metadata
