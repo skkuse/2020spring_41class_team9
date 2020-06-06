@@ -1,3 +1,7 @@
+from django.contrib import admin
+from django.urls import path
+import project.views
+
 """
 MODU URL Configuration
 
@@ -23,4 +27,6 @@ Including another URLconf
 urlpatterns = [
     # Uncomment the next line to enable the admin:
     #path('admin/', admin.site.urls)
+    path('project/write/', project.views.write, name='write'),
+    path('project/<int:pID>/edit', project.views.edit, name='edit')
 ]
