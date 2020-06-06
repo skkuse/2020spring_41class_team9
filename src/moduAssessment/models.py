@@ -3,15 +3,13 @@ from django.db import models
 # Create your models here.
 
 class Assessment(models.Model):
-
     # Fields
 
     a_id = models.AutoField(
-        primary_key = True,
-        max_length = 20
+        primary_key = True
     )
-
-    target = models.ForeignKey(
+    
+    subject = models.ForeignKey(
         'Developer',
         on_delete = models.CASCADE,
         related_name = 'assessments',
@@ -31,6 +29,7 @@ class Assessment(models.Model):
         related_name = 'assessments',
         related_query_name = 'assessment'
     )
+
 
     star1 = models.IntegerField(
         verbose_name = 'ideation star'
@@ -57,7 +56,7 @@ class Assessment(models.Model):
     # Methods
     def __str__(self):
         return "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n" .format(
-            self.target, 
+            self.subject, 
             self.writter, 
             self.project, 
             self.star1, 
