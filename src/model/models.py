@@ -4,6 +4,9 @@ from django.core.exceptions import ValidationError
 
 # Create your models here.
 
+# TODO: use PREDEFINED values rather than raw digits
+
+
 class Project(models.Model):
     p_id = models.AutoField(
         verbose_name = 'project ID'
@@ -170,8 +173,15 @@ class Developer(models.Model):
         related_name = 'developers',
         related_query_name = 'developer')
 
+    # TODO: use through model instead of using direct m2m model
+    #       prevent self object reference
     follow = models.ManyToManyField(
         "self",
+        related_name = 'developers',
+        related_query_name = 'developer')
+
+    favorite = models.ManyToManyField(
+        'Project',
         related_name = 'developers',
         related_query_name = 'developer')
 
@@ -180,12 +190,8 @@ class Developer(models.Model):
         related_name = 'developers',
         related_query_name = 'developer')
 
+    # TODO: separate
     invite = models.ManyToManyField(
-        'Project',
-        related_name = 'developers',
-        related_query_name = 'developer')
-
-    favorite = models.ManyToManyField(
         'Project',
         related_name = 'developers',
         related_query_name = 'developer')
