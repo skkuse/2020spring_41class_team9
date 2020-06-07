@@ -223,7 +223,7 @@ class Assessment(models.Model):
         related_name = 'assessments',
         related_query_name = 'assessment')
 
-    writter = models.ForeignKey(
+    auther = models.ForeignKey(
         'Developer',
         on_delete = models.CASCADE,
         related_name = 'assessments',
@@ -266,7 +266,7 @@ class Assessment(models.Model):
     def __str__(self):
         return "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n".format(
             self.subject,
-            self.writter,
+            self.auther,
             self.project,
             self.score_ideation,
             self.score_development,
