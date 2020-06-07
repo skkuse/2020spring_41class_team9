@@ -212,7 +212,7 @@ class Developer(models.Model):
 
 class Assessment(models.Model):
     a_id = models.AutoField(
-        verbose_name = 'assessment id'
+        verbose_name = 'assessment ID'
         name = 'aID',
         primary_key = True,
         unique = True)
@@ -279,3 +279,77 @@ class Assessment(models.Model):
             raise ValidationError("not a valid value")
         else :
             return value
+
+class Message(models.Model):
+    m_id = models.AutoField(
+        verbose_name = 'message ID',
+        name = 'mID',
+        primary_key = True,
+        unique = True)
+
+    is_read = models.BooleanField(
+        verbose_name = 'is read by a receiver',
+        name = 'is read')
+
+    sent_time = models.DateTimeField(
+        verbose_name = 'message sent time',
+        name = 'sent time')
+
+    text = models.TextField(
+        verbose_name = 'message text',
+        name = 'text')
+
+    sender = models.ForeignKey(
+        'Developer',
+        on_delete = models.CASCADE,
+        related_name = 'messages',
+        related_query_name = 'message'
+        )
+    
+    receiver = models.ForeignKey(
+        'Developer',
+        on_delete = models.CASCADE,
+        related_name = 'messages',
+        related_query_name = 'message'
+        )
+
+    class Meta:
+        verbose_name = 'message'
+        verbose_name_plural = 'messages'
+
+    def __str__(self):
+        return self.text
+
+
+class Notification(models.Model):
+    n_id = models.AutoField(
+        verbose_name = 'notification ID',
+        name = 'nID',
+        primary_key = True,
+        unique = True)
+
+    is_read = models.BooleanField(
+        verbose_name = 'is read by a receiver',
+        name = 'is read')
+
+    sent_time = models.DateTimeField(
+        verbose_name = 'notification sent time',
+        name = 'sent time')
+
+    text = models.TextField(
+        verbose_name = 'notification text',
+        name = 'text')
+    
+    receiver = models.ForeignKey(
+        'Developer',
+        on_delete = models.CASCADE,
+        related_name = 'notifications',
+        related_query_name = 'notification'
+        )
+
+    class Meta:
+        verbose_name = 'notification'
+        verbose_name_plural = 'notifications'
+
+    def __str__(self):
+        return self.text
