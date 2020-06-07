@@ -4,19 +4,22 @@ from django.db import models
 
 class Comment(models.Model):
 
-    cID = models.CharField(
+    c_id = models.AutoField(
+        verbose_name='comment id',
+        name='comment id',
         primary_key=True,
-        max_length=20,
+        max_length=20
     )
 
     comment_text = models.TextField(
         verbose_name='comment text',
+        name='comment text',
         max_length=500
     )
 
     sent_time = models.DateTimeField(auto_now_add=True)
 
-    pID = models.ForeignKey(
+    p_id = models.ForeignKey(
         'Project',
         on_delete=models.CASCADE,
         related_name='comments',
