@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 
 class Project(models.Model):
     p_id = models.AutoField(
-        verbose_name = 'project id'
+        verbose_name = 'project ID'
         name = 'pID',
         primary_key = True,
         unique = True)
@@ -23,7 +23,7 @@ class Project(models.Model):
     #    max_length = 20)
 
     purpose = models.TextField(
-        verbose_name = 'purpose',
+        verbose_name = 'purpose of project',
         name = 'purpose',
         max_length = 500)
 
@@ -32,29 +32,31 @@ class Project(models.Model):
         name = 'output',
         max_length = 500)
 
-    STATUS_WAIT                 = 'wait'
-    STATUS_IN_PROGRESS          = 'in_progress'
-    STATUS_COMPLETE             = 'complete'
+    STATUS_WAIT = 'wait'
+    STATUS_IN_PROGRESS = 'in_progress'
+    STATUS_COMPLETE = 'complete'
 
     status_choices = [(
-        (STATUS_WAIT,           'waiting for your participation'),
-        (STATUS_IN_PROGRESS,    'in progress'),
-        (STATUS_COMPLETE,       'complete'))]
+        (STATUS_WAIT, 'waiting for your participation'),
+        (STATUS_IN_PROGRESS, 'in progress'),
+        (STATUS_COMPLETE, 'complete')
+        )]
     
-    DURATION_1MTH               = '1MTH'
-    DURATION_3MTH               = '3MTH'
-    DURATION_6MTH               = '6MTH'
-    DURATION_9MTH               = '9MTH'
-    DURATION_1YR                = '1YR'
-    DURATION_OVER1YR            = 'OVER1YR'
+    DURATION_1MTH = '1MTH'
+    DURATION_3MTH = '3MTH'
+    DURATION_6MTH = '6MTH'
+    DURATION_9MTH = '9MTH'
+    DURATION_1YR = '1YR'
+    DURATION_OVER1YR = 'OVER1YR'
 
     duration_choices = [(
-        (DURATION_1MTH,         '1 month'),
-        (DURATION_3MTH,         '3 months'),
-        (DURATION_6MTH,         '6 months'),
-        (DURATION_9MTH,         '9 months'),
-        (DURATION_1YR,          '1 year'),
-        (DURATION_OVER1YR,      'over a year'))]
+        (DURATION_1MTH, '1 month'),
+        (DURATION_3MTH, '3 months'),
+        (DURATION_6MTH, '6 months'),
+        (DURATION_9MTH, '9 months'),
+        (DURATION_1YR, '1 year'),
+        (DURATION_OVER1YR, 'over a year')
+        )]
 
     created_time = models.DateTimeField(
         auto_now_add = True)
@@ -62,12 +64,12 @@ class Project(models.Model):
     last_edited_time = models.DateTimeField(
         auto_now = True)
 
-    project_simple_info = models.TextField(
-        verbose_name = 'simple info',
+    simple_info = models.TextField(
+        verbose_name = 'project simple info',
         name = 'simple info',
         max_length = 500)
 
-    project_detailed_info = models.TextField(
+    detailed_info = models.TextField(
         verbose_name = 'detailed info',
         name = 'detailed info',
         max_length = 5000)
@@ -90,7 +92,7 @@ class Project(models.Model):
         ordering = ['created_time']
 
     def __str__(self):
-        return "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n" .format(
+        return "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n".format(
             self.project_name, 
             self.proposer_name, 
             self.status_choices, 
@@ -138,6 +140,75 @@ class Comment(models.Model):
             self.writer,
             self.sent_time,
             self.comment_text)
+
+class Developer(models.Model):
+    u_id = models.AutoField(
+    verbose_name = 'user ID',
+    name = 'uID',
+    primary_key = True,
+    unique = True)
+
+    profile_image_path = models.ImageField(
+        verbose_name = 'profile image of a developer',
+        name = 'profile img',
+        upload_to = 'uploads/user_{0}'.format(u_id),
+        validators = [validate_file_size],
+        # TODO: blank or null
+        #       what is suitable if no uploaded img, deleted or else?
+        blank = True,
+        null = True)
+
+    portfolio = models.TextField(
+        verbose_name = 'portfolio text',
+        name = 'porfolio',
+        max_length = 5000,
+        blank = True)
+
+    proposed_projects = models.ForeignKey(
+        'Project',
+        on_delete = models.CASCADE,
+        related_name = 'developers',
+        related_query_name = 'developer')
+
+    follow = models.ManyToManyField(
+        "self",
+        related_name = 'developers',
+        related_query_name = 'developer')
+
+    member_of = models.ManyToManyField(
+        'Project',
+        related_name = 'developers',
+        related_query_name = 'developer')
+
+    invite = models.ManyToManyField(
+        'Project',
+        related_name = 'developers',
+        related_query_name = 'developer')
+
+    favorite = models.ManyToManyField(
+        'Project',
+        related_name = 'developers',
+        related_query_name = 'developer')
+
+    class Meta:
+        verbose_name = 'developer'
+        ordering = ['u_ID']
+
+    def __str__(self):
+        return "{}\n{}\n{}\n{}\n{}\n{}\n".format(
+            self.profile_image_path, 
+            self.portfolio,
+            self.proposed_projects,
+            self.follow,
+            self.favorite,
+            self.invite)
+    
+    def validate_file_size(value):
+        filesize = value.size
+        if filesize > 10485760:
+            raise ValidationError("The maximum file size that can be uploaded is 10MB")
+        else:
+            return value
 
 class Assessment(models.Model):
     a_id = models.AutoField(
@@ -189,24 +260,22 @@ class Assessment(models.Model):
         name = 'opinion',
         max_length = 100)
 
-    # Metadata
     class Meta: 
         verbose_name = 'assessment'
 
-    # Methods
     def __str__(self):
         return "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n".format(
-            self.subject, 
-            self.writter, 
-            self.project, 
-            self.score_ideation, 
-            self.score_development, 
-            self.score_communication, 
-            self.score_other, 
+            self.subject,
+            self.writter,
+            self.project,
+            self.score_ideation,
+            self.score_development,
+            self.score_communication,
+            self.score_other,
             self.opinion)
 
     def rangeValidation(self, value):
-        if not value in [1, 2, 3, 4, 5]:
+        if not value in range(1, 6):
             raise ValidationError("not a valid value")
         else :
             return value
