@@ -160,7 +160,7 @@ class Developer(models.Model):
 
     portfolio = models.TextField(
         verbose_name = 'portfolio text',
-        name = 'porfolio',
+        name = 'portfolio',
         max_length = 5000,
         blank = True)
 
