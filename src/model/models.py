@@ -1,5 +1,6 @@
 from django.db import models
 from taggit.managers import TaggableManager
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -100,3 +101,75 @@ class Project(models.Model):
             self.tag,
             self.project_detailed_info,
             self.last_edited_time)
+
+class Assessment(models.Model):
+    a_id = models.AutoField(
+        verbose_name = 'assessment id'
+        name = 'aID',
+        primary_key = True,
+        unique = True)
+    
+    subject = models.ForeignKey(
+        'Developer',
+        on_delete = models.CASCADE,
+        related_name = 'assessments',
+        related_query_name = 'assessment')
+
+    writter = models.ForeignKey(
+        'Developer',
+        on_delete = models.CASCADE,
+        related_name = 'assessments',
+        related_query_name = 'assessment')
+
+    project = models.ForeignKey(
+        'Project',
+        on_delete = models.CASCADE,
+        related_name = 'assessments',
+        related_query_name = 'assessment')
+
+    score_ideation = models.IntegerField(
+        verbose_name = 'score for the ideation',
+        name = 'ideation score',
+        validators = [rangeValidation])
+
+    score_development = models.IntegerField(
+        verbose_name = 'score for the development',
+        name = 'development score',
+        validators = [rangeValidation])
+
+    score_communication = models.IntegerField(
+        verbose_name = 'score for the communication',
+        name = 'communication score',
+        validators = [rangeValidation])
+
+    score_other = models.IntegerField(
+        verbose_name = 'score for other parts',
+        name = 'etc. score',
+        validators = [rangeValidation])
+
+    opinion = models.TextField(
+        verbose_name = 'assessment opinion for overall parts',
+        name = 'opinion',
+        max_length = 100)
+
+    # Metadata
+    class Meta: 
+        verbose_name = 'assessment'
+
+    # Methods
+    def __str__(self):
+        return "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n".format(
+            self.subject, 
+            self.writter, 
+            self.project, 
+            self.score_ideation, 
+            self.score_development, 
+            self.score_communication, 
+            self.score_other, 
+            self.opinion)
+
+    def rangeValidation(self, value):
+        if not value in [1, 2, 3, 4, 5]:
+            raise ValidationError("not a valid value")
+        else :
+            return value
