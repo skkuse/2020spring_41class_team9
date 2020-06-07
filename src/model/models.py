@@ -102,6 +102,43 @@ class Project(models.Model):
             self.project_detailed_info,
             self.last_edited_time)
 
+class Comment(models.Model):
+    c_id = models.AutoField(
+        verbose_name = 'comment ID',
+        name = 'comment ID',
+        primary_key = True,
+        unique = True)
+
+    comment_text = models.TextField(
+        verbose_name = 'comment text',
+        name = 'comment text',
+        max_length = 500)
+
+    sent_time = models.DateTimeField(
+        auto_now_add = True)
+
+    project = models.ForeignKey(
+        'Project',
+        on_delete = models.CASCADE,
+        related_name = 'comments',
+        related_query_name = 'comment')
+
+    writer = models.ForeignKey(
+        'Developer',
+        on_delete = models.CASCADE,
+        related_name = 'comments',
+        related_query_name = 'comment')
+
+    class Meta:
+        verbose_name = 'comment'
+        ordering = ['sent_time']
+
+    def __str__(self):
+        return "{}\n{}\n{}\n".format(
+            self.writer,
+            self.sent_time,
+            self.comment_text)
+
 class Assessment(models.Model):
     a_id = models.AutoField(
         verbose_name = 'assessment id'
