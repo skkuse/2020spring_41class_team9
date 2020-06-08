@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import auth
-from .models import Project, Developer
+from ..model.models import Project, Developer
 from django.contrib.auth.decorators import login_required
 
 @login_required
