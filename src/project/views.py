@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Project, Comment
+from ..model.models import Project, Comment
 from .form import ProjectPost, CommentPost
 # Create your views here.
 
