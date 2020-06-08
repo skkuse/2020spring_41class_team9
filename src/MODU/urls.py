@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-import project.views
-import favorite_follow.views
+import assessment.views
 
 # Uncomment next two lines to enable admin:
 #from django.contrib import admin
@@ -10,14 +9,11 @@ import favorite_follow.views
 
 urlpatterns = [
     # Uncomment the next line to enable the admin:
-    #path('admin/', admin.site.urls)
-    #project
-    path('project/write/', project.views.write, name='write'),
-    path('project/<int:p_id>/edit', project.views.edit, name='edit'),
-    path('project/<int:p_id>/comment', project.views.comment, name='comment'),
-
-    #favorite&follow
-    path('project/<int:p_id>/favorite', favorite_follow.views.favorite, name='favorite'),
-    path('developer/<int:u_id>/follow', favorite_follow.views.follow, name='follow'),
+    path('admin/', admin.site.urls),
     
+    #assessment
+    path('mypage/assessment/<int:p_id>', assessment.views.project_select, name = 'project_select'),
+    path('mypage/assessment/<int:p_id>/<int:u_id>', assessment.views.developer_select, name = 'developer_select'),
+    path('mypage/assessment/<int:p_id>/<int:u_id>/write', assessment.views.developer_select, name = 'assessment_write'),
+        
 ]
