@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 
 class Project(models.Model):
     p_id = models.AutoField(
-        verbose_name = 'project ID'
+        verbose_name = 'project ID',
         name = 'pID',
         primary_key = True,
         unique = True)
@@ -218,7 +218,7 @@ class Developer(models.Model):
 
 class Assessment(models.Model):
     a_id = models.AutoField(
-        verbose_name = 'assessment ID'
+        verbose_name = 'assessment ID',
         name = 'aID',
         primary_key = True,
         unique = True)
