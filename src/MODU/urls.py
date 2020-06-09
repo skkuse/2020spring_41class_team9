@@ -18,9 +18,10 @@ Including another URLconf
 
 # Uncomment next two lines to enable admin:
 #from django.contrib import admin
-#from django.urls import path
+from django.urls import path, include
+from users import views as user_views
 
 urlpatterns = [
-    # Uncomment the next line to enable the admin:
-    #path('admin/', admin.site.urls)
+    path('search/', include('search.urls')),
+    path('signup/',user_views.signup,name="signup"),
 ]
