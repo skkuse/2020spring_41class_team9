@@ -1,27 +1,21 @@
-"""
-MODU URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.1/topics/http/urls/
-
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
+from django.contrib import admin
+from django.urls import path
+import assessment.views
 
 # Uncomment next two lines to enable admin:
 #from django.contrib import admin
 from django.urls import path, include
 from users import views as user_views
 
+
 urlpatterns = [
     path('search/', include('search.urls')),
     path('signup/',user_views.signup,name="signup"),
+    # Uncomment the next line to enable the admin:
+    path('admin/', admin.site.urls),
+    
+    #assessment
+    path('mypage/assessment/', assessment.views.project_list.as_view(), name = 'project_list'),
+    path('mypage/assessment/<int:p_id>', assessment.views.developer_list.as_view(), name = 'developer_list'),
+    path('mypage/assessment/<int:p_id>/<int:u_id>', assessment.views.assessment, name = 'assessment')
 ]
