@@ -12,8 +12,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     #assessment
-    path('mypage/assessment/<int:p_id>', assessment.views.project_select, name = 'project_select'),
-    path('mypage/assessment/<int:p_id>/<int:u_id>', assessment.views.developer_select, name = 'developer_select'),
-    path('mypage/assessment/<int:p_id>/<int:u_id>/write', assessment.views.developer_select, name = 'assessment_write'),
-        
+    path('mypage/assessment/', assessment.views.project_list.as_view(), name = 'project_list'),
+    path('mypage/assessment/<int:p_id>', assessment.views.developer_list.as_view(), name = 'developer_list'),
+    path('mypage/assessment/<int:p_id>/<int:u_id>', assessment.views.assessment, name = 'assessment')
 ]
