@@ -137,6 +137,12 @@ DATABASES = {
     }
 }
 
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login'
+LOGOUT_REDIRECT_URL = '/'
+AUTHENTICATION_BACKENDS  = ['authentication.FirebaseRESTBackend']
+AUTH_USER_MODEL = 'model.Developer'
+
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [

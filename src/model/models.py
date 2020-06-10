@@ -1,3 +1,4 @@
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
 from taggit.managers import TaggableManager
 from django.core.exceptions import ValidationError
@@ -144,12 +145,30 @@ class Comment(models.Model):
             self.sent_time,
             self.comment_text)
 
-class Developer(models.Model):
+class Developer(AbstractBaseUser):
     u_id = models.AutoField(
-    verbose_name = 'user ID',
-    name = 'uID',
-    primary_key = True,
-    unique = True)
+        verbose_name = 'user ID',
+        name = 'uID',
+        primary_key=True,
+        unique=True)
+
+    USERNAME_FIELD = 'u_id'
+
+    username = models.CharField(
+        verbose_name = 'user name',
+        name = 'name',
+        max_length = 20)
+
+    email = models.EmailField(
+        verbose_name = 'user email',
+        name = 'email',
+        blank = False)
+
+    EMAIL_FIELD = 'email'
+
+    is_active = models.BooleanField()       # is verified by an email link
+
+    # internal password should be set unusable by calling set_unusable_password()
 
     profile_image_path = models.ImageField(
         verbose_name = 'profile image of a developer',
