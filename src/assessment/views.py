@@ -35,8 +35,8 @@ def assessment(request, projectID, developerID):
         form = AssessmentForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('')
+            return redirect('mypage/assessment/'+str(projectID))
 
-    return:
+    else:
         form = AssessmentForm()
-        return 
+        return render(request, 'assessment.html', {'form':form})
