@@ -15,6 +15,7 @@ $ docker pull docker.pkg.github.com/skkuse/2020spring_41class_team9/modu:tag
 ``` bash
 $ docker run --name modu-server-name            \
     -e SECRET_KEY="django-secret-key"           \
+    -e FIREBASE_API_KEY="firebase-api-key"      \
     -e MARIADB_DBNAME="mariadb-database-name"   \
     -e MARIADB_USERNAME="mariadb-username"      \
     -e MARIADB_PW="mariadb-password"            \
@@ -27,6 +28,9 @@ $ docker run --name modu-server-name            \
 ### Environment Variables
 #### `SECRET_KEY`
 This variable is mandatory and specifies the django secret key.
+
+#### `FIREBASE_API_KEY`
+This variable is mandatory and specifies firebase web api key.
 
 #### `MARIADB_DBNAME`
 This variable is mandatory and specifies the MariaDB database name to use.

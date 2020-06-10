@@ -1,3 +1,4 @@
+import settings
 import requests
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import BaseBackend
@@ -13,7 +14,7 @@ class FirebaseRESTBackend(BaseBackend):
         response = requests.post(URL, data = payload)
         if response.status_code != 200:
             return None
-        return response.json['idToken']
+        return response.json()['idToken']
 
     def firebase_check_email_verification(id_token):
         if id_token is None:
@@ -23,7 +24,7 @@ class FirebaseRESTBackend(BaseBackend):
         response = requests.post(URL, data = payload)
         if response.status_code != 200:
             return None
-        return response.json['users'][0]['emailVerified']
+        return response.json()['users'][0]['emailVerified']
 
     def authenticate(self, request, email = None, password = None):
         id_token = firebase_try_sign_in(email, password)

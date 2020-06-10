@@ -1,4 +1,4 @@
-from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 from taggit.managers import TaggableManager
 from django.core.exceptions import ValidationError
@@ -167,8 +167,6 @@ class Developer(AbstractBaseUser):
     EMAIL_FIELD = 'email'
 
     is_active = models.BooleanField()       # is verified by an email link
-
-    # internal password should be set unusable by calling set_unusable_password()
 
     profile_image_path = models.ImageField(
         verbose_name = 'profile image of a developer',
@@ -344,7 +342,6 @@ class Message(models.Model):
 
     def __str__(self):
         return self.text
-
 
 class Notification(models.Model):
     n_id = models.AutoField(
