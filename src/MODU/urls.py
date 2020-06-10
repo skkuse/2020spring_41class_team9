@@ -17,7 +17,7 @@ urlpatterns = [
     path('project/<int:p_id>/comment', project.views.comment, name='comment'),
 
     #favorite&follow
-    path('project/<int:p_id>/favorite', favorite_follow.views.favorite, name='favorite'),
-    path('developer/<int:u_id>/follow', favorite_follow.views.follow, name='follow'),
+    path('project/favorite', favorite_follow.views.favorite, name='favorite'),
+    path('developer/follow', favorite_follow.views.follow, name='follow'),
     
 ]

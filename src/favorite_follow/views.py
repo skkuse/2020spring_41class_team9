@@ -1,13 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import auth
 from ..model.models import Project, Developer
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+import json
 
-@login_required
-def favorite(request, projectID):
-    project = get_object_or_404(Project, projectID)
-    u_id = request.u_id
+
+def favorite(request):
+    project = get_object_or_404(Project, request.POST['p_id'])
+    u_id = request.session['u_id']
     developer = Developer.object.get(u_id = u_id)
 
     check = developer.favorite.filter(p_id = project.p_id)
@@ -16,23 +17,38 @@ def favorite(request, projectID):
         developer.favorite.remove(project)
         #project.favorite_count -= 1 
         #project.save()
+        message = "favorite"
     else :
         developer.favorite.add(project)
         #project.favorite_count -= 1 
         #project.save()
+        message = "cancel favorite"
 
-    return redirect('/project/'+str(projectID))
+    context = {
+        'message' : message,
+        #'num' : project.favorite_count(),
+    }
 
-def follow(request, targetID):
-    target = get_object_or_404(Developer, targetID)
-    u_id = request.u_id
-    developer = Developer.object.get(u_id = u_id)
+    return HttpResponse(json.dumps(context), content_type= "application/json")
 
-    check = developer.follow.filter(u_id = target.u_id)
+
+
+def follow(request):
+
+    target = get_object_or_404(Developer, request.POST['target_id'])
+    developer = get_object_or_404(Developer, u_id = request.session['u_id'])
+
+    check = developer.follow.filter(u_id = request.POST['target_id'])
 
     if check.exists():
         developer.follow.remove(target)
+        message ="follow"
     else :
         developer.follow.add(target)
+        message = "cancel follow"
 
-    return redirect('/developer/'+str(targetID))
+    context = {
+        'message' : message,
+    }
+
+    return HttpResponse(json.dump(context), content_type="application/json")
