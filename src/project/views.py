@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from ..model.models import Project, Comment
+from ..model.models import Project, Comment, Developer
 from .form import ProjectPost, CommentPost
 # Create your views here.
 
@@ -7,10 +7,11 @@ from .form import ProjectPost, CommentPost
 def write(request):
     if request.method == "POST":
         form = ProjectPost(request.POST)
+        u_id = request.session['u_id']
+        developer = Developer.object.get(u_id = u_id)
         if form.is_valid():
-            project = form.save(commit=False)
-
-            project.save()
+            project = form.save()
+            developer.proposed_project.add(project)
             return redirect('/project/'+str(project.p_id))
     
     else:
@@ -47,7 +48,7 @@ def comment(request, projectID):
 
     if request.method == "POST":
         form = CommentPost(request.post)
-        form.instance.u_id = request.u_id
+        form.instance.u_id = request.session['u_id']
         form.instance.p_id = projectID
         if form.is_valid():
             comment = form.save()
