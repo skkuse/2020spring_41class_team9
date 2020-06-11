@@ -8,13 +8,26 @@ class ProjectPost(forms.ModelForm):
             'project name',
             'purpose',
             'output',
-            #'status',
-            #'duration',
             'simple info',
             'detailed info'
-            #'tag',
-            #'role'
             ]
+        STATUS = (
+            ('W', 'waiting for your participation'),
+            ('P', 'in progress'),
+            ('C', 'complete')
+            )
+        DURATION = (
+            ('1', '1 month'),
+            ('3', '3 months'),
+            ('6', '6 months'),
+            ('9', '9 months'),
+            ('12', '1 year'),
+            ('13', 'over a year')
+            )
+        widgets = {
+            'status' : forms.Select(choices=STATUS, attrs={'class': 'status_choice'}),
+            'duration' : forms.Select(choices=DURATION, attrs={'class': 'duration_choice'})
+        }
 
 class CommentPost(forms.ModelForm):
     class Meta:
