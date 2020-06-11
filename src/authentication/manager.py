@@ -13,7 +13,7 @@ class CustomUserManager(BaseUserManager):
         if not email or not password:
             return None
         URL = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + FIREBASE_API_KEY
-        payload = dict(email = email, password = password, returnSecureToken = "True")
+        payload = dict(email = email, password = password, returnSecureToken = True)
         response = requests.post(URL, data = payload)
         if response.status_code != 200:
             return None

@@ -162,6 +162,7 @@ class Developer(AbstractBaseUser):
     email = models.EmailField(
         verbose_name = 'user email',
         name = 'email',
+        unique=True,
         blank = False)
 
     EMAIL_FIELD = 'email'
