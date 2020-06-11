@@ -10,7 +10,7 @@ from .views import *
 urlpatterns = [
     # Uncomment the next line to enable the admin:
     #path('admin/', admin.site.urls)
-    path('project/write/', project.views.write, name='write'),
-    path('project/<int:p_id>/edit', project.views.edit, name='edit'),
-    path('project/<int:p_id>/comment', project.views.comment, name='comment')
+    path('project/write/', write, name='write'),
+    path('project/<int:p_id>/edit', edit, name='edit'),
+    path('project/<int:p_id>/comment', comment, name='comment')
 ]
