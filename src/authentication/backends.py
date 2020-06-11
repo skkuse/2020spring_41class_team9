@@ -9,8 +9,8 @@ class FirebaseRESTBackend(BaseBackend):
     def firebase_try_sign_in(email = None, password = None):
         if not email or not password:
             return None
-        URL = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword/accounts:signInWithPassword?key=' + FIREBASE_API_KEY
-        payload = dict(email = email, password = password, returnSecureToken = "True")
+        URL = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + FIREBASE_API_KEY
+        payload = dict(email = email, password = password, returnSecureToken = True)
         response = requests.post(URL, data = payload)
         if response.status_code != 200:
             return None

@@ -20,5 +20,5 @@ from . import views
 from django.urls import path
 
 urlpatterns = [
-    #path('login', views., name='login') # TODO views
+    path('login', 'UserLoginView.as_view()'),
 ]
