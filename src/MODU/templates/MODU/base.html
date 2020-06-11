@@ -31,9 +31,13 @@
                   </div>
                   <!-- Navbar Right Side -->
                   <div class="navbar-nav">
+                    {% if developer.is_authenticated %}
+                    <a class="nav-item nav-link" href="#">Profile</a>
+                    <a class="nav-item nav-link" href="#">Logout</a>
+                    {% else %}
                     <a class="nav-item nav-link" href="#">Signin</a>
                     <a class="nav-item nav-link" href="#">Login</a>
-                    <a class="nav-item nav-link" href="#">Logout</a>
+                    {% endif %}
                   </div>
                 </div>
               </div>
