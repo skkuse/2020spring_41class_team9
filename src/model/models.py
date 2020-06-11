@@ -1,6 +1,7 @@
 import random
 import datetime
 from django.utils.hashcompat import sha_constructor
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 from taggit.managers import TaggableManager
 from django.core.exceptions import ValidationError
@@ -13,7 +14,7 @@ from django.core.exceptions import ValidationError
 
 class Project(models.Model):
     p_id = models.AutoField(
-        verbose_name = 'project ID'
+        verbose_name = 'project ID',
         name = 'pID',
         primary_key = True,
         unique = True)
@@ -151,12 +152,29 @@ class Comment(models.Model):
             self.sent_time,
             self.comment_text)
 
-class Developer(models.Model):
+class Developer(AbstractBaseUser):
     u_id = models.AutoField(
-    verbose_name = 'user ID',
-    name = 'uID',
-    primary_key = True,
-    unique = True)
+        verbose_name = 'user ID',
+        name = 'uID',
+        primary_key=True,
+        unique=True)
+
+    USERNAME_FIELD = 'u_id'
+
+    username = models.CharField(
+        verbose_name = 'user name',
+        name = 'name',
+        max_length = 20)
+
+    email = models.EmailField(
+        verbose_name = 'user email',
+        name = 'email',
+        unique=True,
+        blank = False)
+
+    EMAIL_FIELD = 'email'
+
+    is_active = models.BooleanField()       # is verified by an email link
 
     profile_image_path = models.ImageField(
         verbose_name = 'profile image of a developer',
@@ -227,7 +245,7 @@ class Developer(models.Model):
 
 class Assessment(models.Model):
     a_id = models.AutoField(
-        verbose_name = 'assessment ID'
+        verbose_name = 'assessment ID',
         name = 'aID',
         primary_key = True,
         unique = True)
@@ -334,7 +352,6 @@ class Message(models.Model):
 
     def __str__(self):
         return self.text
-
 
 class Notification(models.Model):
     n_id = models.AutoField(
