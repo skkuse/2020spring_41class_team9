@@ -1,6 +1,10 @@
+import random
+import datetime
+from django.utils.hashcompat import sha_constructor
 from django.db import models
 from taggit.managers import TaggableManager
 from django.core.exceptions import ValidationError
+
 
 # Create your models here.
 
@@ -122,13 +126,16 @@ class Comment(models.Model):
     sent_time = models.DateTimeField(
         auto_now_add = True)
 
-    project = models.ForeignKey(
-        'Project',
-        on_delete = models.CASCADE,
-        related_name = 'comments',
-        related_query_name = 'comment')
-
-    writer = models.ForeignKey(
+    ##수정
+    project = models.ManyToManyField(
+       'Project',
+       on_delete = models.CASCADE,
+       related_name = 'comments',
+       related_query_name = 'comment',
+       through = 'commentModel')
+    
+    ##수정
+    author = models.ForeignKey(
         'Developer',
         on_delete = models.CASCADE,
         related_name = 'comments',
@@ -140,7 +147,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return "{}\n{}\n{}\n".format(
-            self.writer,
+            self.author,
             self.sent_time,
             self.comment_text)
 
@@ -175,26 +182,29 @@ class Developer(models.Model):
 
     # TODO: use through model instead of using direct m2m model
     #       prevent self object reference
+    invite = models.ManyToManyField(
+        related_name = 'developers',
+        related_query_name = 'developer',
+        through = 'Invitation'
+        )
+
     follow = models.ManyToManyField(
         "self",
         related_name = 'developers',
-        related_query_name = 'developer')
+        related_query_name = 'developer',
+        through = 'followModel')
 
     favorite = models.ManyToManyField(
         'Project',
         related_name = 'developers',
-        related_query_name = 'developer')
+        related_query_name = 'developer',
+        through = 'favoriteModel')
 
     member_of = models.ManyToManyField(
         'Project',
         related_name = 'developers',
-        related_query_name = 'developer')
-
-    # TODO: separate
-    invite = models.ManyToManyField(
-        'Project',
-        related_name = 'developers',
-        related_query_name = 'developer')
+        related_query_name = 'developer',
+        through = 'memberModel')
 
     class Meta:
         verbose_name = 'developer'
@@ -206,8 +216,7 @@ class Developer(models.Model):
             self.portfolio,
             self.proposed_projects,
             self.follow,
-            self.favorite,
-            self.invite)
+            self.favorite)
     
     def validate_file_size(value):
         filesize = value.size
@@ -359,3 +368,90 @@ class Notification(models.Model):
 
     def __str__(self):
         return self.text
+
+class Invitation(models.Model):
+
+    i_id = models.AutoField(
+        verbose_name = 'invitation ID',
+        name = 'iID',
+        primary_key = True,
+        unique = True)
+    
+    is_accepted = models.BooleanField(
+        verbose_name = 'is accepted by a receiver',
+        name = 'is accepted')
+    
+    sent_time = models.DateTimeField(
+        verbose_name = 'invitation sent time',
+        name = 'sent time')
+
+    text = models.TextField(
+        verbose_name = 'invitation text',
+        name = 'text')
+
+    ##수정
+    invited_pid = models.ForeignKey('Project',
+        verbose_name = 'inviting project',
+        name = 'invite')
+
+    class Meta:
+        unique_together = ('invite', 'project')
+    ##추가
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(
+                        invited_pid!= memberModel__project),
+                        name="invite_projects_only_not_in_memberModel"),
+           ]
+
+    def __str__(self):
+        return self.text   
+    
+
+## 이름 알아듣게 수정
+class commentModel(models.Model):
+    
+    comment = models.ForeignKey(Comment)
+    
+    project = models.ForeignKey(Project)
+
+    class Meta:
+        unique_together = ('comment', 'project')
+
+class followModel(models.Model):
+    
+    developer1 = models.ForeignKey(Developer)
+    
+    developer2 = models.ForeignKey(Developer)
+
+    class Meta:
+        unique_together = ('developer1', 'developer2')
+
+
+class favoriteModel(models.Model):
+    
+    developer = models.ForeignKey(Developer)
+
+    favorite = models.ForeignKey(Project)
+
+    class Meta:
+        unique_together = ('developer','favorite')
+
+class memberModel(models.Model):
+    
+    member = models.ForeignKey(Developer)
+
+    project = models.ForeignKey(Project)
+
+    class Meta:
+        unique_together = ('member','project')
+
+class inviteModel(models.Model):
+    
+    acceptor = models.ForeignKey(Developer)
+    
+    project = models.ForeignKey(Project)
+
+    class Meta:
+        unique_together = ('acceptor', 'project')
+
