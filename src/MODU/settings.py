@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'authentication.apps.AuthenticationConfig',
+    'model.apps.ModelConfig',
 ]
 
 # Middleware framework

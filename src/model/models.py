@@ -1,6 +1,5 @@
 import random
 import datetime
-from django.utils.hashcompat import sha_constructor
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 from taggit.managers import TaggableManager
@@ -82,10 +81,10 @@ class Project(models.Model):
         name = 'detailed info',
         max_length = 5000)
 
-    tag = TaggableManager()
+    #tag = TaggableManager()
     
     # TODO: enable role and count pairing
-    role = TaggableManager()
+    #role = TaggableManager()
 
     # TODO: REMOVE
     ##Member of-Project
@@ -128,12 +127,11 @@ class Comment(models.Model):
         auto_now_add = True)
 
     ##수정
-    project = models.ManyToManyField(
+    project = models.ForeignKey(
        'Project',
        on_delete = models.CASCADE,
        related_name = 'comments',
-       related_query_name = 'comment',
-       through = 'commentModel')
+       related_query_name = 'comment')
     
     ##수정
     author = models.ForeignKey(
@@ -159,7 +157,7 @@ class Developer(AbstractBaseUser):
         primary_key=True,
         unique=True)
 
-    USERNAME_FIELD = 'u_id'
+    USERNAME_FIELD = 'uID'
 
     username = models.CharField(
         verbose_name = 'user name',
@@ -175,6 +173,13 @@ class Developer(AbstractBaseUser):
     EMAIL_FIELD = 'email'
 
     is_active = models.BooleanField()       # is verified by an email link
+
+    def validate_file_size(value):
+        filesize = value.size
+        if filesize > 10485760:
+            raise ValidationError("The maximum file size that can be uploaded is 10MB")
+        else:
+            return value
 
     profile_image_path = models.ImageField(
         verbose_name = 'profile image of a developer',
@@ -195,38 +200,37 @@ class Developer(AbstractBaseUser):
     proposed_projects = models.ForeignKey(
         'Project',
         on_delete = models.CASCADE,
-        related_name = 'developers',
-        related_query_name = 'developer')
+        related_name = 'proposed_projects',
+        related_query_name = 'proposed_project')
 
-    # TODO: use through model instead of using direct m2m model
-    #       prevent self object reference
     invite = models.ManyToManyField(
-        related_name = 'developers',
-        related_query_name = 'developer',
+        'Project',
+        related_name = 'projects_invited_to',
+        related_query_name = 'project_invited_to',
         through = 'Invitation'
         )
 
     follow = models.ManyToManyField(
         "self",
-        related_name = 'developers',
-        related_query_name = 'developer',
+        related_name = 'followers',
+        related_query_name = 'follower',
         through = 'followModel')
 
     favorite = models.ManyToManyField(
         'Project',
-        related_name = 'developers',
-        related_query_name = 'developer',
+        related_name = 'favorite_projects',
+        related_query_name = 'favorite_project',
         through = 'favoriteModel')
 
     member_of = models.ManyToManyField(
         'Project',
-        related_name = 'developers',
-        related_query_name = 'developer',
+        related_name = 'participating_projects',
+        related_query_name = 'participating_project',
         through = 'memberModel')
 
     class Meta:
         verbose_name = 'developer'
-        ordering = ['u_ID']
+        ordering = ['uID']
 
     def __str__(self):
         return "{}\n{}\n{}\n{}\n{}\n{}\n".format(
@@ -235,13 +239,6 @@ class Developer(AbstractBaseUser):
             self.proposed_projects,
             self.follow,
             self.favorite)
-    
-    def validate_file_size(value):
-        filesize = value.size
-        if filesize > 10485760:
-            raise ValidationError("The maximum file size that can be uploaded is 10MB")
-        else:
-            return value
 
 class Assessment(models.Model):
     a_id = models.AutoField(
@@ -253,13 +250,13 @@ class Assessment(models.Model):
     subject = models.ForeignKey(
         'Developer',
         on_delete = models.CASCADE,
-        related_name = 'assessments',
+        related_name = 'assessments_written_for',
         related_query_name = 'assessment')
 
     auther = models.ForeignKey(
         'Developer',
         on_delete = models.CASCADE,
-        related_name = 'assessments',
+        related_name = 'assessments_written_by',
         related_query_name = 'assessment')
 
     project = models.ForeignKey(
@@ -267,6 +264,12 @@ class Assessment(models.Model):
         on_delete = models.CASCADE,
         related_name = 'assessments',
         related_query_name = 'assessment')
+
+    def rangeValidation(self, value):
+        if not value in range(1, 6):
+            raise ValidationError("not a valid value")
+        else :
+            return value
 
     score_ideation = models.IntegerField(
         verbose_name = 'score for the ideation',
@@ -307,12 +310,6 @@ class Assessment(models.Model):
             self.score_other,
             self.opinion)
 
-    def rangeValidation(self, value):
-        if not value in range(1, 6):
-            raise ValidationError("not a valid value")
-        else :
-            return value
-
 class Message(models.Model):
     m_id = models.AutoField(
         verbose_name = 'message ID',
@@ -335,15 +332,15 @@ class Message(models.Model):
     sender = models.ForeignKey(
         'Developer',
         on_delete = models.CASCADE,
-        related_name = 'messages',
-        related_query_name = 'message'
+        related_name = 'sended_messages',
+        related_query_name = 'sended_message'
         )
     
     receiver = models.ForeignKey(
         'Developer',
         on_delete = models.CASCADE,
-        related_name = 'messages',
-        related_query_name = 'message'
+        related_name = 'received_messages',
+        related_query_name = 'received_message'
         )
 
     class Meta:
@@ -393,7 +390,19 @@ class Invitation(models.Model):
         name = 'iID',
         primary_key = True,
         unique = True)
-    
+
+    receiver = models.ForeignKey(
+        'Developer',
+        on_delete = models.CASCADE,
+        verbose_name = 'invited developer',
+        name = 'receiver')
+
+    project = models.ForeignKey(
+        'Project',
+        on_delete = models.CASCADE,
+        verbose_name = 'invited project',
+        name = 'project')
+
     is_accepted = models.BooleanField(
         verbose_name = 'is accepted by a receiver',
         name = 'is accepted')
@@ -406,69 +415,58 @@ class Invitation(models.Model):
         verbose_name = 'invitation text',
         name = 'text')
 
-    ##수정
-    invited_pid = models.ForeignKey('Project',
-        verbose_name = 'inviting project',
-        name = 'invite')
-
     class Meta:
-        unique_together = ('invite', 'project')
-    ##추가
-        constraints = [
-            models.CheckConstraint(
-                check=models.Q(
-                        invited_pid!= memberModel__project),
-                        name="invite_projects_only_not_in_memberModel"),
-           ]
+        unique_together = ('receiver', 'project')
+    ###추가
+    #    constraints = [
+    #        models.CheckConstraint(
+    #            check = models.Q(project__iexact = Invitation.objects.select_related('receiver').get(i_id=models.F('i_id')).values('member_of')),
+    #            name="invite_projects_only_not_in_memberModel"),
+    #       ]
 
     def __str__(self):
-        return self.text   
-    
-
-## 이름 알아듣게 수정
-class commentModel(models.Model):
-    
-    comment = models.ForeignKey(Comment)
-    
-    project = models.ForeignKey(Project)
-
-    class Meta:
-        unique_together = ('comment', 'project')
+        return self.text
 
 class followModel(models.Model):
     
-    developer1 = models.ForeignKey(Developer)
+    follower = models.ForeignKey(
+        Developer,
+        on_delete = models.CASCADE,
+        name = 'follower',
+        related_name = 'followers')
     
-    developer2 = models.ForeignKey(Developer)
+    followee = models.ForeignKey(
+        Developer,
+        on_delete = models.CASCADE,
+        name = 'followee',
+        related_name = 'followees')
 
     class Meta:
-        unique_together = ('developer1', 'developer2')
+        unique_together = ('follower', 'followee')
 
 
 class favoriteModel(models.Model):
     
-    developer = models.ForeignKey(Developer)
+    developer = models.ForeignKey(
+        Developer,
+        on_delete = models.CASCADE,)
 
-    favorite = models.ForeignKey(Project)
+    favorite = models.ForeignKey(
+        Project,
+        on_delete = models.CASCADE,)
 
     class Meta:
         unique_together = ('developer','favorite')
 
 class memberModel(models.Model):
     
-    member = models.ForeignKey(Developer)
+    member = models.ForeignKey(
+        Developer,
+        on_delete = models.CASCADE,)
 
-    project = models.ForeignKey(Project)
+    project = models.ForeignKey(
+        Project,
+        on_delete = models.CASCADE,)
 
     class Meta:
         unique_together = ('member','project')
-
-class inviteModel(models.Model):
-    
-    acceptor = models.ForeignKey(Developer)
-    
-    project = models.ForeignKey(Project)
-
-    class Meta:
-        unique_together = ('acceptor', 'project')
-

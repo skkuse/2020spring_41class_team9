@@ -1,3 +1,5 @@
 django >= 3.0, < 4.0
 mysqlclient
 django-taggit
+django-crispy-forms
+Pillow
