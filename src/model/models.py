@@ -39,22 +39,27 @@ class Project(models.Model):
         name = 'output',
         max_length = 500)
 
-    STATUS_WAIT = 'wait'
-    STATUS_IN_PROGRESS = 'in_progress'
-    STATUS_COMPLETE = 'complete'
+    STATUS_WAIT = 'W'
+    STATUS_IN_PROGRESS = 'P'
+    STATUS_COMPLETE = 'C'
 
     status_choices = [(
         (STATUS_WAIT, 'waiting for your participation'),
         (STATUS_IN_PROGRESS, 'in progress'),
         (STATUS_COMPLETE, 'complete')
         )]
-    
-    DURATION_1MTH = '1MTH'
-    DURATION_3MTH = '3MTH'
-    DURATION_6MTH = '6MTH'
-    DURATION_9MTH = '9MTH'
-    DURATION_1YR = '1YR'
-    DURATION_OVER1YR = 'OVER1YR'
+
+    status = models.CharField(
+        name = 'status',
+        choices=status_choices,
+        max_length=1)
+
+    DURATION_1MTH = '1'
+    DURATION_3MTH = '3'
+    DURATION_6MTH = '6'
+    DURATION_9MTH = '9'
+    DURATION_1YR = '12'
+    DURATION_OVER1YR = '13'
 
     duration_choices = [(
         (DURATION_1MTH, '1 month'),
@@ -64,6 +69,11 @@ class Project(models.Model):
         (DURATION_1YR, '1 year'),
         (DURATION_OVER1YR, 'over a year')
         )]
+
+    duration = models.CharField(
+        name = 'duration',
+        choices=duration_choices,
+        max_length=2)
 
     created_time = models.DateTimeField(
         auto_now_add = True)

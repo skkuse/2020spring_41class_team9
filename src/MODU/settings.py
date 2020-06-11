@@ -68,6 +68,7 @@ INSTALLED_APPS = [
 
     'authentication.apps.AuthenticationConfig',
     'model.apps.ModelConfig',
+    'project.apps.ProjectConfig',
 ]
 
 # Middleware framework
