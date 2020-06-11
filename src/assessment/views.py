@@ -26,15 +26,38 @@ def developer_list(request, projectID):
     def get_queryset(self):
         queryset = Developer.objects.all()
         queryset = queryset.filter(member_of = project)
-        queryset = queryset.exclude(u_id = self.request.session.get('u_id'))#.valude('name') 
-        #developer model에 name 필드 추가?
+        queryset = queryset.exclude(u_id = self.request.session.get('u_id'))#.valude('username') 
 
         return queryset
+
+"""
+distinct('name')은?
+이미 작성된 경우 제외?
+
+        queryset2 = Assessment.object.all()
+        queryset2 = queryset2.filter(auther = self.request.session['user'])
+        queryset2 = queryset2.filter(project = project)
+
+        for u_id in queryset2.subject :
+            queryset = queryset.exclude(u_id = u_id)
+
+        return queryset
+가능?
+
+그럼 모든 평가가 완료된 후 평가할 대상 이 없는 경우는?
+
+if exist()
+
+??
+"""     
     
 
 
 #개발자 선택시
 def assessment(request, projectID, developerID):
+
+# 이미 작성된 경우 error?
+
     if request.method =="POST":
         form = AssessmentForm(request.POST)
         if form.is_valid():
@@ -44,5 +67,8 @@ def assessment(request, projectID, developerID):
     else:
         form = AssessmentForm()
         return render(request, 'assessment.html', {'form':form})
+
+
+
 
 

@@ -4,7 +4,7 @@
 <div class="content">
     <h1> Developer List </h1>
     {% for developer in assessment_developer_list %}
-    <h4><a herf="{% url 'assessment' developer.member_of.p_id developer.u_id %}"> {{developer.name}} </a></h4>
+    <h4><a herf="{% url 'assessment' developer.member_of.p_id developer.u_id %}"> {{developer.username}} </a></h4>
     {% endfor %}
 
 
