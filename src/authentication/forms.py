@@ -4,11 +4,7 @@ from django.utils.translation import gettext, gettext_lazy as _
 from django.contrib.auth import (
     authenticate, get_user_model, password_validation,
 )
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Field
-from crispy_forms.bootstrap import (
-    PrependedText, PrependedAppendedText, FormActions
-)
+
 
 User = get_user_model()
 
@@ -106,10 +102,7 @@ class CustomUserCreationForm(forms.ModelForm):
         help_text=_("Enter the same password as before, for verification."),
     )
     
-    helper = FormHelper()
-    helper.form_method = 'POST'
-    helper.add_input(Submit('Sign Up', 'Sign Up', css_class='btn-primary'))
-
+    
     class Meta:
         model = User
         fields = ('name', 'email',)

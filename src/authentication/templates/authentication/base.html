@@ -8,9 +8,14 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'authentication/main.css' %}">
 
-    <title>MODU</title>
+    {% if title %}
+        <title>MODU-{{title}}</title>
+    {% else %}
+        <title>MODU</title>
+    {% endif %}
+   
     <body>
         <header class="site-header">
             <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
@@ -26,7 +31,7 @@
                   </div>
                   <!-- Navbar Right Side -->
                   <div class="navbar-nav">
-                    {% if user.is_authenticated %}
+                    {% if developer.is_authenticated %}
                     <a class="nav-item nav-link" href="#">Profile</a>
                     <a class="nav-item nav-link" href="#">Logout</a>
                     {% else %}
@@ -40,36 +45,18 @@
           </header>
 
         <main role="main" class="container">
-            
             <div class="row">
+                <form class="form-inline ml-auto">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                  </form>
+            </div>
+            <div class="row">
+                {% for post in posts %}
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <div class="container">
-                            <div class="row">
-                                <br>
-                                <br>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 offset-3">
-                                    <form method="post">
-                                        {% csrf_token %}
-                                      <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="text" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter Email" required>
-                                      </div>
-                                      <div class="form-group">
-                                        <label for="Password">Password</label>
-                                        <input type="password" class="form-control" name="password1" id="password2" placeholder="Password" required>
-                                      </div>
-                                      <div class="form-group">
-                                        <label for="Password Confirmation">Confirm Password</label>
-                                        <input type="password" class="form-control" name="password2" id="password2" placeholder="Password" required>
-                                      </div>
-                                      <button type="submit" class="btn btn-primary">Submit</button>
-                                    </form>
-                                </div>
-                            </div>
-                            </div>
+                    {% block content %}{% endblock %}
                     </div>
+                {% endfor %}
               <!--<div class="col-md-2 ">
                 <div class="content-section">
                   <h3>Filter</h3>
@@ -94,5 +81,3 @@
 
     </body>
 </html>
-
-    

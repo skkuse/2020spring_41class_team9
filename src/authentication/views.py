@@ -11,14 +11,15 @@ User = get_user_model()
 class UserRegistrationView(CreateView):
     form_class = CustomUserCreationForm
     success_url = '/'
+    template_name = 'authentication/signup.html'
 
 class UserLoginView(LoginView):
     form_class = CustomAuthenticationForm
-    template_name = '/login.html' # TODO
+    template_name = 'authentication/login.html' # TODO
 
     def form_invalid(self, form):
         messages.error(self.request, 'Failed to log in.', extra_tags='danger')
         return super().form_invalid(form)
 
 class UserLogoutView(LogoutView):
-    template_name = 'logout.html' # TODO
+    template_name = 'authentication/logout.html' # TODO
