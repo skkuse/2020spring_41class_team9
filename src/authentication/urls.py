@@ -20,5 +20,7 @@ from . import views
 from django.urls import path
 
 urlpatterns = [
+    path('signup', 'UserRegistrationView.as_view()'),
     path('login', 'UserLoginView.as_view()'),
+    path('logout', 'UserLogoutView.as_view()'),
 ]
