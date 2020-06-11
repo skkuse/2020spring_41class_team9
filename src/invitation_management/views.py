@@ -29,21 +29,6 @@ def invite(request, userID):
         'message' : message,    
     }
 
-    project = get_object_or_404(Project, request.POST['p_id'])
-    u_id = request.session['u_id']
-    developer = Developer.object.get(u_id = u_id)
-
-    #project = Project.object.get(p_id = p_id)
-
-    check = Invitation.object.filter(invited_pid = project.p_id)
-
-    if check.exists():
-        Invitation.object.remove(project)
-    else:
-        Invitation.object.add(project)
-
-    return redirect('/developer/'+str(userID))
-
 def invitationAccept(request, userID):
     
     invitation = get_object_or_404(Invitation, request.POST['i_id'])
