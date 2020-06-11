@@ -43,11 +43,11 @@ class Project(models.Model):
     STATUS_IN_PROGRESS = 'P'
     STATUS_COMPLETE = 'C'
 
-    status_choices = [(
+    status_choices = [
         (STATUS_WAIT, 'waiting for your participation'),
         (STATUS_IN_PROGRESS, 'in progress'),
         (STATUS_COMPLETE, 'complete')
-        )]
+        ]
 
     status = models.CharField(
         name = 'status',
@@ -61,14 +61,14 @@ class Project(models.Model):
     DURATION_1YR = '12'
     DURATION_OVER1YR = '13'
 
-    duration_choices = [(
+    duration_choices = [
         (DURATION_1MTH, '1 month'),
         (DURATION_3MTH, '3 months'),
         (DURATION_6MTH, '6 months'),
         (DURATION_9MTH, '9 months'),
         (DURATION_1YR, '1 year'),
         (DURATION_OVER1YR, 'over a year')
-        )]
+        ]
 
     duration = models.CharField(
         name = 'duration',
