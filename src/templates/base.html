@@ -35,7 +35,7 @@
                     <a class="nav-item nav-link" href="#">Profile</a>
                     <a class="nav-item nav-link" href="#">Logout</a>
                     {% else %}
-                    <a class="nav-item nav-link" href="#">Signin</a>
+                    <a class="nav-item nav-link" href="#">Signup</a>
                     <a class="nav-item nav-link" href="#">Login</a>
                     {% endif %}
                   </div>
@@ -46,17 +46,7 @@
 
         <main role="main" class="container">
             <div class="row">
-                <form class="form-inline ml-auto">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                  </form>
-            </div>
-            <div class="row">
-                {% for post in posts %}
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    {% block content %}{% endblock %}
-                    </div>
-                {% endfor %}
+            {% block content %}{% endblock %}
               <!--<div class="col-md-2 ">
                 <div class="content-section">
                   <h3>Filter</h3>
