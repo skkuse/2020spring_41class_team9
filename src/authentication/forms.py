@@ -27,11 +27,6 @@ class CustomAuthenticationForm(forms.Form):
         'inactive': _("This account is inactive."),
     }
 
-    #class Meta:
-    #    model = Developer
-    #    fields = ('email', 'password')
-    #    field_classes = {'email': forms.EmailField, 'password': forms.CharField(widget=forms.PasswordInput)}
-
     def __init__(self, request=None, *args, **kwargs):
         """
         The 'request' parameter is set for custom auth use by subclasses.
