@@ -3,10 +3,10 @@
 {% block content %}
     <div class="content-section">
       <div class="media">
-        <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
         <div class="media-body">
-          <h2 class="account-heading">{{ user.username }}</h2>
+          <h2 class="account-heading">{{ post.proposer_name }}</h2>
           <p class="text-secondary">{{ user.email }}</p>
+          <button type="submit" class="btn btn-primary">Favorite</button>
         </div>
     </div>
       <form method="POST" enctype="multipart/form-data">

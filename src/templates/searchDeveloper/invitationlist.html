@@ -1,0 +1,16 @@
+{% extends "authentication/base1.html" %}
+
+
+{% block content %}
+    {% for invitation in inviations %}
+        <article class="media content-section">
+            <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="/projectinfo/">{{ project.projectname }}</a>
+                <small class="text-muted">{{ project.projectdescription}}</small>
+                <button type="submit" class="btn btn-primary">Accept</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+            </div>
+    {% endfor %}
+{% endblock content %}
