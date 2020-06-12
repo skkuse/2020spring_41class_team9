@@ -15,7 +15,6 @@ class UserRegistrationView(CreateView):
     template_name = 'authentication/signup.html'
 
     def form_valid(self, form):
-        form.save()
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -25,6 +24,7 @@ class UserRegistrationView(CreateView):
 class UserLoginView(LoginView):
     form_class = CustomAuthenticationForm
     template_name = 'authentication/login.html'
+    redirect_authenticated_user = True
 
     def form_invalid(self, form):
         messages.error(self.request, 'Failed to log in.', extra_tags='danger')
