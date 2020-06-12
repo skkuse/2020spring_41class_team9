@@ -1,3 +1,6 @@
-from django.conf.urls import url
+from django.urls import path
 from .views import *
-urlpatterns = [url(r'^searchproject/$', SearchProjectFormView.as_view(), name='searchproject'),]
+
+urlpatterns = [path('searchproject', SearchProjectFormView.as_view()),]
+
+    
