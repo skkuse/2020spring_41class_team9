@@ -14,9 +14,11 @@
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">프로필 정보</legend>
-                <p class="article-content">Portfolio: {{ post.portfolio }}</p>
+                <p class="article-content">Portfolio: {{ developer.portfolio }}</p>
                 <p class="article-content">Projects: </p>
-                <p class="article-content">{{ post.proposed_projects }}</p>
+                {% for devproject in developer.proposed_projects %}
+                <p class="article-content">{{ devproject }}</p>
+                {% endfor %}
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-info" type="submit">Update</button>
