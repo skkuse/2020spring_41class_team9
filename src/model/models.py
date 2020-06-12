@@ -24,12 +24,6 @@ class Project(models.Model):
         name = 'project name',
         max_length = 100)
 
-    # TODO: REMOVE!
-    #proposer_name = models.TextField(
-    #    verbose_name = 'proposer name',
-    #    name = 'proposer name',
-    #    max_length = 20)
-
     purpose = models.TextField(
         verbose_name = 'purpose of project',
         name = 'purpose',
@@ -96,14 +90,6 @@ class Project(models.Model):
     
     # TODO: enable role and count pairing
     #role = TaggableManager()
-
-    # TODO: REMOVE
-    ##Member of-Project
-    #members = models.ManyToManyField(
-    #    'Developer',
-    #    on_delete = models.CASCADE,
-    #    related_name = 'projects',
-    #    related_query_name = 'project')
 
     class Meta:
         verbose_name = 'project'
@@ -251,7 +237,9 @@ class Developer(AbstractBaseUser):
 
     EMAIL_FIELD = 'email'
 
-    is_active = models.BooleanField()       # is verified by an email link
+    is_active = models.BooleanField(
+        verbose_name = 'verified with email',
+        name = 'is verified')
 
     def validate_file_size(value):
         filesize = value.size

@@ -12,14 +12,18 @@ class UserRegistrationView(CreateView):
     form_class = CustomUserCreationForm
     success_url = '/'
     template_name = 'authentication/signup.html'
+    #def form_valid(self, form):
+        
+    #def form_invalid(self, form):
+    #    print('happening2')
 
 class UserLoginView(LoginView):
     form_class = CustomAuthenticationForm
-    template_name = 'authentication/login.html' # TODO
+    template_name = 'authentication/login.html'
 
     def form_invalid(self, form):
         messages.error(self.request, 'Failed to log in.', extra_tags='danger')
         return super().form_invalid(form)
 
 class UserLogoutView(LogoutView):
-    template_name = 'authentication/logout.html' # TODO
+    template_name = 'authentication/logout.html'

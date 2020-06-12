@@ -13,6 +13,7 @@ class CustomAuthenticationForm(forms.Form):
     email/password logins.
     """
     email = forms.EmailField(widget=forms.TextInput(attrs={'autofocus': True}))
+
     password = forms.CharField(
         label=_("Password"),
         strip=False,
@@ -41,7 +42,7 @@ class CustomAuthenticationForm(forms.Form):
         email_max_length = 254
         self.fields['email'].max_length = email_max_length
         self.fields['email'].widget.attrs['maxlength'] = email_max_length
-        self.fields['email'].label = 'Enter email'
+        self.fields['email'].label = 'e-mail'
 
     def clean(self):
         email = self.cleaned_data.get('email')
@@ -100,8 +101,7 @@ class CustomUserCreationForm(forms.ModelForm):
         strip=False,
         help_text=_("Enter the same password as before, for verification."),
     )
-    
-    
+
     class Meta:
         model = Developer
         fields = ('name', 'email',)
