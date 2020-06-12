@@ -1,6 +1,6 @@
-
 """
 MODU URL Configuration
+
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
 
@@ -16,13 +16,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import include, path
+from .views import *
+from django.urls import path
 
 urlpatterns = [
-    path('', include('authentication.urls')),
-    path('project/', include('searchProject.urls')),
-    path('developer/', include('searchDeveloper.urls')),
-    path('project/', include('project.urls')),
-    path('mypage/assessment/', include('assessment.urls')),
-
+    path('signup', UserRegistrationView.as_view()),
+    path('login', UserLoginView.as_view()),
+    path('logout', UserLogoutView.as_view()),
 ]

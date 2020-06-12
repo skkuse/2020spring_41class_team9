@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <article class="media content-section">
+        <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="#">{{ post.profile_image_path }}</a>
+            <small class="text-muted">{{ post.created_time}}</small>
+        </div>
+        <h2><a class="article-title" href="#">{{ post.u_ID }}</a></h2>
+        <p class="article-content">{{ post.portfolio }}</p>
+        <p class="article-content">Duration: {{post.proposed_projects}}</p>
+        </div>
+{% endblock content %}

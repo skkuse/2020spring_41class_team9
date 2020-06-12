@@ -9,16 +9,17 @@
 ``` json
 {
     "DJANGO_SECRET_KEY" : "put secret key"
+    "FIREBASE_API_KEY"  : "put firebase api key"
 }
 ```
 2) Write down database information in `./settings/database.json`
 ``` json
 {
-    "MARIADB_DBNAME" : "put db name",
-    "MARIADB_USERNAME" : "put user name",
-    "MARIADB_PW" : "put password",
-    "MARIADB_HOST" : "put host",
-    "MARIADB_PORT" : "put port"
+    "MARIADB_DBNAME"    : "put db name",
+    "MARIADB_USERNAME"  : "put user name",
+    "MARIADB_PW"        : "put password",
+    "MARIADB_HOST"      : "put host",
+    "MARIADB_PORT"      : "put port"
 }
 ```
 
@@ -47,8 +48,8 @@ py -m pip install -r requirements.txt
 In virutal environment, migrate django  
 ex) on Windows cmd
 ``` cmd
-py manage.py migrate
 py manage.py makemigrations
+py manage.py migrate
 ```
 
 ## 5. Run server

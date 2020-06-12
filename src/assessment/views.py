@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView
-from ..model.models import Project, Developer, Assessment
-from .forms import AssessmentForm
+from model.models import Project, Developer, Assessment
+from assessment.forms import AssessmentForm
 
 # Create your views here.
 
