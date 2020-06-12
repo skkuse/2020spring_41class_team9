@@ -171,7 +171,7 @@ class CustomUserManager(BaseUserManager):
             return False
         return True
 
-    def create_user(self, email, username, password = None):
+    def create_user(self, email, username, is_active, password = None):
         print('create_user called')
         if not email:
             raise ValueError(_('Users must have an email address'))
@@ -186,14 +186,18 @@ class CustomUserManager(BaseUserManager):
         
         if not password:
             raise ValueError(_('Users must have a password'))
+        
+        print('test')
 
         user = self.model(
-            email = email,
+            email = self.normalize_email(email),
             username = username,
             password = set_unusable_password(),
             is_active = False,
             # TODO: how to add imagefield?
             portfolio = '')
+
+        print('test')
 
         id_token = firebase_try_sign_up(email, password)
         if id_token is not None:
