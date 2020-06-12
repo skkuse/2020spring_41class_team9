@@ -4,7 +4,7 @@ ADD         src /
 
 RUN         apk update \
             && pip install --upgrade pip
-RUN         apk add --no-cache --virtual .build-deps build-base mariadb-dev \
+RUN         apk add --no-cache --virtual .build-deps build-base mariadb-dev python3-dev jpeg-dev zlib-dev\
             && apk add --no-cache mariadb-connector-c-dev
 RUN         pip install -r requirements.txt \
             && pip install gunicorn
