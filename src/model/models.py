@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 from MODU.settings import FIREBASE_API_KEY
 from django.contrib.auth.models import BaseUserManager
 from django.utils.translation import gettext, gettext_lazy as _
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -181,28 +182,39 @@ class CustomUserManager(BaseUserManager):
             return False
         return True
 
+    def firebase_delete_account(id_token=None):
+        if id_token is None:
+            return False
+        URL = 'https://identitytoolkit.googleapis.com/v1/accounts:delete?key=' + FIREBASE_API_KEY
+        payload = dict(idToken = id_token)
+        response = requests.post(URL, data = payload)
+        print('firebase_delete_account', response)
+        if response.status_code != 200:
+            return False
+        return True
+
     def create_user(self, email, username, password = None, commit=False, **kwargs):
         print('create_user called', commit)
 
         if not email:
-            raise ValueError(_('Users must have an email address'))
+            raise ValidationError(_('Users must have an email address.'))
 
         email = self.normalize_email(email)
 
         if not self.filter_email(email):
-            raise ValueError(_('User need school mail address'))
+            raise ValidationError(_('User need school mail address'))
 
         if not username:
-            raise ValueError(_('Users must have an username'))
+            raise ValidationError(_('Users must have an username.'))
         
         if not password:
-            raise ValueError(_('Users must have a password'))
+            raise ValidationError(_('Users must have a password.'))
 
         user = self.model(
             email = self.normalize_email(email),
             name = username,
             password = self.model.set_unusable_password(self.model),
-            is_verified = False,
+            is_active = False,
             # TODO: how to add imagefield?
             portfolio = '')
 
@@ -212,28 +224,46 @@ class CustomUserManager(BaseUserManager):
         id_token = self.firebase_try_sign_up(email, password)
         if id_token is not None:
             try:
-                user = self.model.objects.get(email=email)
-                raise RuntimeError('The account not exists in firebase, but already exists in django.')
+                u = self.model.objects.get(email=email)
+                raise ValidationError('The account not exists in firebase, but already exists in django.')
+
             except self.model.DoesNotExist:
                 print("user created.")
+
                 self.firebase_send_email_verification(id_token)
                 print("user verification sent.")
+
+                user.id_token = id_token
                 user.save(using=self._db)
                 return user
+
         else:
             try:
-                user = self.model.objects.get(email=email)
-                if user.is_verified:
-                    print("already verified user.")
-                    return None
+                u = self.model.objects.get(email=email)
+                if u.is_active:
+                    raise ValidationError('The email is already in use.')
                 else:
-                    print("not verified user.")
-                    return None
-                    #print("not verified user. we sent verification again.")
-                    #self.firebase_send_email_verification(id_token)
-                    #return user
+                    print("unverified user.")
+
+                    delete_result = firebase_delete_account(id_token)
+                    if not delete_result:
+                        print("failed to delete unverified user. return None.")
+                        return None
+                    u.delete()
+                    print("previous unverified user deleted.")
+
+                    id_token = self.firebase_try_sign_up(email, password)
+                    print("user created.")
+
+                    self.firebase_send_email_verification(id_token)
+                    print("user verification sent.")
+
+                    user.id_token = id_token
+                    user.save(using=self._db)
+                    return user
+
             except self.model.DoesNotExist:
-                raise RuntimeError('The account already exists in firebase, but not exists in django.')
+                raise ValidationError('The account already exists in firebase or not made in firebase, and not exists in django.')
 
     def create_superuser(username_field, password=None, **other_fields):
         return None
@@ -244,10 +274,15 @@ class Developer(AbstractBaseUser):
     u_id = models.AutoField(
         verbose_name = 'user ID',
         name = 'uID',
-        primary_key=True,
-        unique=True)
+        primary_key = True,
+        unique = True)
 
     USERNAME_FIELD = 'uID'
+
+    id_token = models.TextField(
+        verbose_name = 'id_token',
+        name = 'id_token',
+        unique = True)
 
     username = models.CharField(
         verbose_name = 'user name',
@@ -270,7 +305,7 @@ class Developer(AbstractBaseUser):
 
     is_active = models.BooleanField(
         verbose_name = 'verified with email',
-        name = 'is_verified',
+        name = 'is_active',
         default=False)
 
     def validate_file_size(value):

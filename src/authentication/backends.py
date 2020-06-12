@@ -2,6 +2,7 @@ from MODU.settings import FIREBASE_API_KEY
 import requests
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import BaseBackend
+from django.core.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -32,13 +33,15 @@ class FirebaseRESTBackend(BaseBackend):
         print('auth called')
         id_token = self.firebase_try_sign_in(email, password)
         if id_token is None:
+            raise ValidationError('이메일 혹은 비밀번호를 확인해주세요.')
             return None
         if not self.firebase_check_email_verification(id_token):
+            raise ValidationError('이메일을 인증해주세요.')
             return None
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            raise RuntimeError('The account exists in firebase, but not exists in django.')
+            raise ValidationError('The account exists in firebase, but not exists in django.')
         if not user.is_active:
             user.is_active = True
             user.save()

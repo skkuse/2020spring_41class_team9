@@ -1,0 +1,15 @@
+﻿{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+{% block content %}
+<main role="main" class="container">
+    <div class="content-section">
+        <legend class="border-bottom mb-4">인증 메일을 전송하였습니다!</legend>
+        <div class="mb-3">인증 링크를 접속하시면 계정이 활성화됩니다!</div>
+    </div>
+</main>
+{% endblock %}

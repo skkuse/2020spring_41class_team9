@@ -1,22 +1,28 @@
-﻿{% extends "authentication/base.html" %}
+﻿{% extends "base.html" %}
 {% load crispy_forms_tags %}
 
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
 {% block content %}
-<div class="content-section">
-    <form method="POST">
-        {% csrf_token %}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4">오늘 가입하세요!</legend>
-            {{form|crispy}}
-        </fieldset>
-        <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Sign Up</button>
+<main role="main" class="container">
+    <div class="row">
+        <div class="content-section">
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">오늘 가입하세요!</legend>
+                    {{form|crispy}}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Sign Up</button>
+                </div>
+            </form>
+            <div class="border-top pt-3">
+                <small class="text-muted">계정이 이미 있으신가요?<a class="ml-2" href="/login">Log In</a></small>
+            </div>
         </div>
-    </form>
-    <div class="border-top pt-3">
-        <small class="text-muted">
-            계정이 이미 있으신가요? <a class="ml-2" href="#">Log In</a>
-        </small>
     </div>
-</div>
-{% endblock content %}
+</main>
+{% endblock %}

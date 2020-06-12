@@ -17,6 +17,9 @@ Including another URLconf
 """
 
 from django.urls import include, path
+from django.views.generic.base import RedirectView
+
+favicon_view = RedirectView.as_view(url='/static/favicon/favicon.ico', permanent=True)
 
 urlpatterns = [
     path('', include('authentication.urls')),
@@ -24,5 +27,5 @@ urlpatterns = [
     path('developer/', include('searchDeveloper.urls')),
     path('project/', include('project.urls')),
     path('mypage/assessment/', include('assessment.urls')),
-
+    path('favicon.ico', favicon_view),
 ]
