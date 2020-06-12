@@ -1,16 +1,9 @@
 from django.contrib import admin
 from django.urls import path
-from .views import *
-
-# Uncomment next two lines to enable admin:
-#from django.contrib import admin
-#from django.urls import path
-
+from assessment.views import *
 
 urlpatterns = [
-    # Uncomment the next line to enable the admin:
-    #path('admin/', admin.site.urls)
-    path('project/write/', write, name='write'),
-    path('project/<int:p_id>/edit', edit, name='edit'),
-    path('project/<int:p_id>/comment', comment, name='comment')
+    path('', project_list),
+    path('<int:p_id>', developer_list),
+    path('<int:p_id>/<int:u_id>', assessment)
 ]

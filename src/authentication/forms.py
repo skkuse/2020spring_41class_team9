@@ -1,12 +1,11 @@
 from django import forms
 from django.contrib.auth.forms import UsernameField
 from django.utils.translation import gettext, gettext_lazy as _
+from django.utils.text import capfirst
 from django.contrib.auth import (
     authenticate, get_user_model, password_validation,
 )
-
-
-User = get_user_model()
+from model.models import Developer
 
 class CustomAuthenticationForm(forms.Form):
     """
@@ -28,6 +27,11 @@ class CustomAuthenticationForm(forms.Form):
         'inactive': _("This account is inactive."),
     }
 
+    #class Meta:
+    #    model = Developer
+    #    fields = ('email', 'password')
+    #    field_classes = {'email': forms.EmailField, 'password': forms.CharField(widget=forms.PasswordInput)}
+
     def __init__(self, request=None, *args, **kwargs):
         """
         The 'request' parameter is set for custom auth use by subclasses.
@@ -38,12 +42,11 @@ class CustomAuthenticationForm(forms.Form):
         super().__init__(*args, **kwargs)
 
         # Set the max length and label for the "email" field.
-        self.email_field = UserModel._meta.get_field(UserModel.EMAIL_FIELD)
-        email_max_length = self.email_field.max_length or 254
+        self.email_field = Developer.EMAIL_FIELD
+        email_max_length = 254
         self.fields['email'].max_length = email_max_length
         self.fields['email'].widget.attrs['maxlength'] = email_max_length
-        if self.fields['email'].label is None:
-            self.fields['email'].label = capfirst(self.email_field.verbose_name)
+        self.fields['email'].label = 'Enter email'
 
     def clean(self):
         email = self.cleaned_data.get('email')
@@ -85,6 +88,7 @@ class CustomAuthenticationForm(forms.Form):
             params={'email': self.email_field.verbose_name},
         )
 
+
 class CustomUserCreationForm(forms.ModelForm):
     error_messages = {
         'password_mismatch': _('The two password fields didn’t match.'),
@@ -104,7 +108,7 @@ class CustomUserCreationForm(forms.ModelForm):
     
     
     class Meta:
-        model = User
+        model = Developer
         fields = ('name', 'email',)
         field_classes = {'name': UsernameField, 'email': forms.EmailField}
 

@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,7 +8,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{% static 'MODU/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'authentication/main.css' %}">
 
     {% if title %}
         <title>MODU-{{title}}</title>
@@ -26,8 +26,8 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarToggle">
                   <div class="navbar-nav mr-auto">
-                    <a class="nav-item nav-link" href="{% url 'searchproject' %}">MODU 모여라</a>
-                    <a class="nav-item nav-link" href="{% url 'searchdeveloper' %}">MODU 어딨니</a>
+                    <a class="nav-item nav-link" href="/project/search">MODU 모여라</a>
+                    <a class="nav-item nav-link" href="/developer/search">MODU 어딨니</a>
                   </div>
                   <!-- Navbar Right Side -->
                   <div class="navbar-nav">

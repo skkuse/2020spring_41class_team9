@@ -1,4 +1,4 @@
-import settings
+from MODU.settings import FIREBASE_API_KEY
 import requests
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import BaseBackend
@@ -27,6 +27,7 @@ class FirebaseRESTBackend(BaseBackend):
         return response.json()['users'][0]['emailVerified']
 
     def authenticate(self, request, email = None, password = None):
+        print('auth called')
         id_token = firebase_try_sign_in(email, password)
         if id_token is None:
             return None

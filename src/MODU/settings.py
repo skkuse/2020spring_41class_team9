@@ -64,10 +64,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'crispy_forms',
 
     'authentication.apps.AuthenticationConfig',
     'model.apps.ModelConfig',
     'project.apps.ProjectConfig',
+    'assessment.apps.AssessmentConfig',
 ]
 
 # Middleware framework
@@ -142,7 +145,7 @@ DATABASES = {
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login'
 LOGOUT_REDIRECT_URL = '/'
-AUTHENTICATION_BACKENDS  = ['authentication.FirebaseRESTBackend']
+AUTHENTICATION_BACKENDS  = ['authentication.backends.FirebaseRESTBackend']
 AUTH_USER_MODEL = 'model.Developer'
 
 # Password validation
@@ -178,7 +181,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-#CRISPY_TEMPLATE_PACK='bootstrap4'
+CRISPY_TEMPLATE_PACK='bootstrap4'
 
 # Firebase REST API setting
 if MODU_PRODUCTION:

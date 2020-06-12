@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import *
+from searchProject.views import *
 
-urlpatterns = [path('searchproject', SearchProjectFormView.as_view()),]
+urlpatterns = [path('search', SearchProjectFormView.as_view()),]
 
     

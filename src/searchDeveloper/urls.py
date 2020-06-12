@@ -1,3 +1,4 @@
-from django.conf.urls import url
-from .views import *
-urlpatterns = [url(r'^searchdeveloper/$', SearchDeveloperFormView.as_view(), name='searchdeveloper'),]
+from django.urls import path
+from searchDeveloper.views import *
+
+urlpatterns = [path('search', SearchDeveloperFormView.as_view()),]
