@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
-from .models import Project, Developer
-from django.views import View
+from model.models import Project, Developer
+from django.views.generic import DetailView
 
 
 # Create your views here.
@@ -9,12 +9,15 @@ from django.views import View
 # Is log in required?
 
 
-def project_detail_view(request, primary_key):
-    project = get_object_or_404(Project, pk=primary_key)
-    return render(request, 'project/project_detail.html', context={'project': project})
+class Project_detail_view(DetailView):
+    model = Project
+    template_name = "projectinfo"
+    context_object_name = "project_info"
 
-def developer_detail_view(request, primary_key):
-    developer = get_object_or_404(Developer, pk=primary_key)
-    return render(request, 'developer/developer_detail.html', context={'developer': developer})
 
+
+class Developer_detail_view(DetailView):
+    model = Developer
+    template_name = "developerinfo"
+    context_object_name = "developer_info"
 

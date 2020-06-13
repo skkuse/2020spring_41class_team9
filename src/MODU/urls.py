@@ -27,5 +27,6 @@ urlpatterns = [
     path('developer/', include('searchDeveloper.urls')),
     path('project/', include('project.urls')),
     path('mypage/assessment/', include('assessment.urls')),
+    path('', include('information_view.urls')),
     path('favicon.ico', favicon_view),
 ]
