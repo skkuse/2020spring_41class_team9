@@ -3,13 +3,9 @@
 {% block content %}
 
 
-
 <div class="container">
-    {{form.media}}
-    <form action={%url "assessment" p_id=1 u_id=2 %} method = "POST">
-        <table>
-            {{form.as_table}}
-        </table>
+    <form action="" method = "POST">
+        {# {% csrf_token %}  #}
         <h4> Ideation score :</h4>
         <input type="rating" name='ideation score' value="5" required="" id="id_ideation" min="0" max="5" step="1" style="display: none">
         <div id="star_id_ideation" class="rateit rateit-bg" data-reteit-backingfld="#id_ideation">
@@ -32,10 +28,6 @@
         <br><br>
         <h4> Opinion </h4>
         <textarea name="opinion" id="" cols="40" rows="10"></textarea>
-
-        
-
-
         <br><br>
         <button type="submit" class="btn btn-primary">작성완료</button>
     </form>

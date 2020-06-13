@@ -3,3 +3,4 @@ mysqlclient
 django-taggit
 Pillow
 django-crispy-forms
+requests

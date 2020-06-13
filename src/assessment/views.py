@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView
+from django.contrib.auth.decodators import login_required
 from model.models import Project, Developer, Assessment
 from .forms import AssessmentForm
 
 # Create your views here.
 
 #상호평가 버튼 클릭시
+@method_decorator(login_required, name='dispatch')
 class project_list(ListView):
 
     context_object_name = 'assessment_project_list'
@@ -17,6 +19,7 @@ class project_list(ListView):
         return queryset
 
 #프로젝트 선택시
+@method_decorator(login_required, name='dispatch')
 class developer_list(ListView):
 
     context_object_name = 'assessment_developer_list'
@@ -30,36 +33,22 @@ class developer_list(ListView):
 
         return queryset
 
-"""
-distinct('name')은?
-이미 작성된 경우 제외?
-
-        queryset2 = Assessment.object.all()
-        queryset2 = queryset2.filter(auther = self.request.session['user'])
-        queryset2 = queryset2.filter(project = project)
-
-        for u_id in queryset2.subject :
-            queryset = queryset.exclude(u_id = u_id)
-
-        return queryset
-가능?
-
-그럼 모든 평가가 완료된 후 평가할 대상 이 없는 경우는?
-
-if exist()
-
-??
-"""     
-    
-
 
 #개발자 선택시
+@login_required
 def assessment(request, p_id, u_id):
 
+    subject = get_object_or_404(Developer, uID = u_id)
+    auther = get_object_or_404(Developer, uID = request.session['uID'])
+    project = get_object_or_404(Project, p_id = p_id)
 
     if request.method =="POST":
         form = AssessmentForm(request.POST)
         if form.is_valid():
+            assessment = form.save(commit=False)
+            assessment.subject = subject
+            assessment.auther = auther
+            assessment.project = project
             form.save()
             return redirect('mypage/assessment/'+str(p_id))
 
