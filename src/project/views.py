@@ -92,4 +92,6 @@ class ProjectUpdateView(UserPassesTestMixin,UpdateView):
     def test_func(self):
         proj = self.get_object()
         return self.request.user == proj.proposer
+
+    
     
