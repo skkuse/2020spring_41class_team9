@@ -43,10 +43,12 @@ class Project_list(ListView):
             #해당 프로젝트에 대한 모든 평가가 작성 되었을 경우
             if flag == 0 :
                 result = result.exclude(participating_project = participating_project)
+
+        try:
+            return result
         
-        return result
-
-
+        except result.DoesNotExist: 
+            raise Http404("평가 가능한 프로젝트가 없습니다.")
 
 
 
