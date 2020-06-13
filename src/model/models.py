@@ -9,6 +9,7 @@ from MODU.settings import FIREBASE_API_KEY
 from django.contrib.auth.models import BaseUserManager
 from django.utils.translation import gettext, gettext_lazy as _
 from django.core.exceptions import ValidationError
+import re
 
 # Create your models here.
 
@@ -158,7 +159,7 @@ class Comment(models.Model):
 
 class CustomUserManager(BaseUserManager):
     def filter_email(self, email = None):
-        return True # TODO: filter email
+        return re.search(r"^.+@(g.skku.edu)|(skku.edu)$", email)
 
     def firebase_try_sign_up(self, email = None, password = None):
         if not email or not password:
