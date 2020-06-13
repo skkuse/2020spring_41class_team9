@@ -1,7 +1,7 @@
 from django import forms
 
 class CounterTextInput(forms.TextInput):
-    template_name = "widgets/counter_text.html"
+    template_name = "assessment/counter_text.html"
 
 
 """
@@ -20,7 +20,7 @@ class CounterTextInput(forms.TextInput):
 """
 class starWidget(forms.TextInput):
     input_type = 'rating'
-    template_name = "widgets/star_rate.html"
+    template_name = "assessment/star_rate.html"
 
     class Media:
         css = {
