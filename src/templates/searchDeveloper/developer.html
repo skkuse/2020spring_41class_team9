@@ -16,10 +16,9 @@
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
     </div>
-
     <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
         {% for developer in object_list %}
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
         <article class="media content-section">
             <div class="media-body">
                 <div class="article-metadata">
@@ -32,6 +31,7 @@
                 <p class="article-content">{{ developer.portfolio }}</p>
                 <p class="article-content">{{developer.proposed_projects}}</p>
             </div>
+        </div>
         </article>
         {% empty %}
         <div>
@@ -39,6 +39,6 @@
         </div>
         {% endfor %}
     </div>
-</div>
+
 </main>
 {% endblock %}
