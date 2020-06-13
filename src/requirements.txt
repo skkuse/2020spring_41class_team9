@@ -4,3 +4,4 @@ django-taggit
 Pillow
 django-crispy-forms
 django-search-views
+requests

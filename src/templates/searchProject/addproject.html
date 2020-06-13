@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+{% block main %}
+<main role="main" class="container-fluid col-6 center-block">
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">프로젝트 아이디어를 추가하세요!</legend>
+                {{form|crispy}}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">추가하기</button>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock %}
