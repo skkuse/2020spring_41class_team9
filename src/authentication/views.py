@@ -9,6 +9,9 @@ User = get_user_model()
 
 # Create your views here.
 
+def mainpage(request):
+    return render(request, 'authentication/mainpage.html')
+
 class UserRegistrationView(CreateView):
     form_class = CustomUserCreationForm
     success_url = '/'
