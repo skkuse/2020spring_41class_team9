@@ -11,21 +11,26 @@
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>-->
-        <form class="form-inline" action="" method="GET">
+        <form class="form-inline ml-auto" action="" method="GET">
             {{ form }}
-            <button class="btn" type="submit">Search</button>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
     </div>
+
     <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
         {% for developer in object_list %}
         <article class="media content-section">
             <div class="media-body">
                 <div class="article-metadata">
-                    <a class="mr-2" href="#">{{ developer.profile_image_path }}</a>
-                    <small class="text-muted">{{ developer.name }}</small>
+                    <form class="form-inline">
+                        <a class="mr-2" href="#">{{ developer.profile_image_path }}</a>
+                        <h3 class="text-muted">{{ developer.name }}</h3>
+                        <button type="submit" class="btn btn-primary ml-auto">Follow</button>
+                    </form>
                 </div>
                 <p class="article-content">{{ developer.portfolio }}</p>
-                <p class="article-content">Duration: {{developer.proposed_projects}}</p>
+                <p class="article-content">{{developer.proposed_projects}}</p>
             </div>
         </article>
         {% empty %}
@@ -34,5 +39,6 @@
         </div>
         {% endfor %}
     </div>
+</div>
 </main>
 {% endblock %}
