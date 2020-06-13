@@ -5,11 +5,11 @@ class ProjectPost(forms.ModelForm):
     class Meta:
         model = Project
         fields = [
-            'project name',
+            'name',
             'purpose',
             'output',
-            'simple info',
-            'detailed info'
+            'simple_info',
+            'detailed_info'
             ]
         STATUS = (
             ('W', 'waiting for your participation'),
@@ -33,7 +33,7 @@ class CommentPost(forms.ModelForm):
     class Meta:
         model = Comment
         fields = [
-            'comment text'
+            'text'
         ]
 
         

@@ -25,7 +25,7 @@ class Project(models.Model):
 
     project_name = models.TextField(
         verbose_name = 'project name',
-        name = 'project name',
+        name = 'name',
         max_length = 100)
 
     proposer = models.ForeignKey(
@@ -59,12 +59,12 @@ class Project(models.Model):
         choices=status_choices,
         max_length=1)
 
-    DURATION_1MTH = '1'
-    DURATION_3MTH = '3'
-    DURATION_6MTH = '6'
-    DURATION_9MTH = '9'
-    DURATION_1YR = '12'
-    DURATION_OVER1YR = '13'
+    DURATION_1MTH = '1개월'
+    DURATION_3MTH = '3개월'
+    DURATION_6MTH = '6개월'
+    DURATION_9MTH = '9개월'
+    DURATION_1YR = '1년'
+    DURATION_OVER1YR = '1년 초과'
 
     duration_choices = [
         (DURATION_1MTH, '1 month'),
@@ -78,7 +78,7 @@ class Project(models.Model):
     duration = models.CharField(
         name = 'duration',
         choices=duration_choices,
-        max_length=2)
+        max_length=10)
 
     created_time = models.DateTimeField(
         auto_now_add = True)
@@ -88,12 +88,12 @@ class Project(models.Model):
 
     simple_info = models.TextField(
         verbose_name = 'project simple info',
-        name = 'simple info',
+        name = 'simple_info',
         max_length = 500)
 
     detailed_info = models.TextField(
         verbose_name = 'detailed info',
-        name = 'detailed info',
+        name = 'detailed_info',
         max_length = 5000)
 
     #tag = TaggableManager()
@@ -121,13 +121,13 @@ class Project(models.Model):
 class Comment(models.Model):
     c_id = models.AutoField(
         verbose_name = 'comment ID',
-        name = 'comment ID',
+        name = 'cID',
         primary_key = True,
         unique = True)
 
     comment_text = models.TextField(
         verbose_name = 'comment text',
-        name = 'comment text',
+        name = 'text',
         max_length = 500)
 
     sent_time = models.DateTimeField(
@@ -217,7 +217,9 @@ class CustomUserManager(BaseUserManager):
             password = self.model.set_unusable_password(self.model),
             is_active = False,
             # TODO: how to add imagefield?
-            portfolio = '')
+            major = '',
+            portfolio = '',
+            languages = '')
 
         if not commit:
             return user
@@ -318,18 +320,30 @@ class Developer(AbstractBaseUser):
 
     profile_image_path = models.ImageField(
         verbose_name = 'profile image of a developer',
-        name = 'profile img',
+        name = 'profile_img',
         upload_to = 'uploads/user_{0}'.format(u_id),
         validators = [validate_file_size],
         # TODO: blank or null
         #       what is suitable if no uploaded img, deleted or else?
         blank = True,
         null = True)
+    
+    major = models.CharField(
+        verbose_name = 'major',
+        name = 'major',
+        max_length = 20,
+        blank = True)
 
     portfolio = models.TextField(
         verbose_name = 'portfolio text',
         name = 'portfolio',
         max_length = 5000,
+        blank = True)
+
+    languages = models.TextField(
+        verbose_name = 'languages',
+        name = 'languages',
+        max_length = 100,
         blank = True)
 
     invite = models.ManyToManyField(
@@ -402,22 +416,22 @@ class Assessment(models.Model):
 
     score_ideation = models.IntegerField(
         verbose_name = 'score for the ideation',
-        name = 'ideation score',
+        name = 'ideation_score',
         validators = [rangeValidation])
 
     score_development = models.IntegerField(
         verbose_name = 'score for the development',
-        name = 'development score',
+        name = 'development_score',
         validators = [rangeValidation])
 
     score_communication = models.IntegerField(
         verbose_name = 'score for the communication',
-        name = 'communication score',
+        name = 'communication_score',
         validators = [rangeValidation])
 
     score_other = models.IntegerField(
         verbose_name = 'score for other parts',
-        name = 'etc. score',
+        name = 'etc_score',
         validators = [rangeValidation])
 
     opinion = models.TextField(
@@ -448,11 +462,11 @@ class Message(models.Model):
 
     is_read = models.BooleanField(
         verbose_name = 'is read by a receiver',
-        name = 'is read')
+        name = 'is_read')
 
     sent_time = models.DateTimeField(
         verbose_name = 'message sent time',
-        name = 'sent time')
+        name = 'sent_time')
 
     text = models.TextField(
         verbose_name = 'message text',
@@ -488,11 +502,11 @@ class Notification(models.Model):
 
     is_read = models.BooleanField(
         verbose_name = 'is read by a receiver',
-        name = 'is read')
+        name = 'is_read')
 
     sent_time = models.DateTimeField(
         verbose_name = 'notification sent time',
-        name = 'sent time')
+        name = 'sent_time')
 
     text = models.TextField(
         verbose_name = 'notification text',
@@ -534,11 +548,11 @@ class Invitation(models.Model):
 
     is_accepted = models.BooleanField(
         verbose_name = 'is accepted by a receiver',
-        name = 'is accepted')
+        name = 'is_accepted')
     
     sent_time = models.DateTimeField(
         verbose_name = 'invitation sent time',
-        name = 'sent time')
+        name = 'sent_time')
 
     text = models.TextField(
         verbose_name = 'invitation text',
