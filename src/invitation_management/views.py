@@ -1,64 +1,57 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import ListView
 from django.contrib.auth.models import User
-from .models import Project, Developer, Invitation
-from django.http import HttpResponse
-import json
+from model.models import Project, Developer, Invitation
 
-# previous change: invitation inquiry is done through message
-# so here, we only deal with (1) developer inviting other developer in a project,
-# and (2) developer accepting or rejecting invitations
 # Create your views here.
 
+# developer 초대 버튼 클릭시
+def invite_button
 
-def invite(request, userID):
+
+
+
+class InviteListView(ListView):
     
-    subject = get_object_or_404(Developer, request.POST[userID])
-    developer = get_object_or_404(Developer, u_id = request.session['u_id'])
+    context_object_name = 'invite_list'
+    template_name = 'searchDeveloper/invitationlist.html'
+    paginate_by = 10
     
-    check = developer.invite.filter(u_id = request.POST[userID])
+    def get_queryset(self):
+        developer = get_object_or_404(Developer, uID = self.request.session.get('uID'))
+        queryset = Invitation.objects.filter(receiver = developer)
 
-    if check.exists():
-        developer.invite.remove(subject)
-        message = "invite"
-
-    else :
-        developer.invite.add(subject)
-        message = "cancel invite"
-
-    context = {
-        'message' : message,    
-    }
-
-    project = get_object_or_404(Project, request.POST['p_id'])
-    u_id = request.session['u_id']
-    developer = Developer.object.get(u_id = u_id)
-
-    #project = Project.object.get(p_id = p_id)
-
-    check = Invitation.object.filter(invited_pid = project.p_id)
-
-    if check.exists():
-        Invitation.object.remove(project)
-    else:
-        Invitation.object.add(project)
-
-    return redirect('/developer/'+str(userID))
-
-def invitationAccept(request, userID):
+        return queryset.order_by('sent_time')
     
-    invitation = get_object_or_404(Invitation, request.POST['i_id'])
-    i_id = request
-    u_id = request.session['u_id']
+def invite_accept(request, project, uID):
 
-    check = invitation.object.filter(i_id = i_id)
+    context_object_name = 'invite_list'
+    template_name = 'searchDeveloper/invitationlist.html'
 
-    # Accept
-    if check.exists():
-        check.is_accepted = TRUE
-        return check.remove(i_id)
-    # Reject
-    else:
-        check.is_accepted = FALSE
-        return
-    
-    return redirect('/mypage/invitation/'+str(userID))
+    def get_queryset(self, **kwargs):
+        developer = get_object_or_404(Developer, uID = self.request.session.get('uID'))
+        queryset = Invitation.objects.filter(receiver = developer)
+
+        #Invitation의 project를 developer의 member_of에 추가하고
+        developer.member_of.add(project)
+
+        queryset = queryset.exclude(project) #?
+
+        return queryset.order_by('sent_time')
+
+
+# 초대 거절 선택시
+def invite_reject(request, project, uID):
+
+    context_object_name = 'invite_list'
+    template_name = 'searchDeveloper/invitationlist.html'
+
+    def get_queryset(self, **kwargs):
+        developer = get_object_or_404(Developer, uID = self.request.session.get('uID'))
+        queryset = Invitation.objects.filter(receiver = developer)
+
+        #Invitation 제거
+        queryset.is_accepted = False #?
+
+        return queryset.order_by('sent_time')
+      
