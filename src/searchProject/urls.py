@@ -1,6 +1,4 @@
 from django.urls import path
 from searchProject.views import *
 
-urlpatterns = [path('search', SearchProjectFormView.as_view()),]
-
-    
+urlpatterns = [path('search', ProjectSearchList.as_view()),]
