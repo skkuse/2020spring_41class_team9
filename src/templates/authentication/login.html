@@ -5,24 +5,22 @@
 {% include 'header.html' %}
 {% endblock %}
 
-{% block content %}
-<main role="main" class="container-fluid">
-    <div class="col-6">
-        <div class="content-section">
-            <form method="POST">
-                {% csrf_token %}
-                <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">로그인하세요!</legend>
-                    {{form|crispy}}
-                </fieldset>
-                <div class="form-group">
-                    <button class="btn btn-outline-info" type="submit">Login</button>
-                </div>
-            </form>
-            <div class="border-top pt-3">
-                <small class="text-muted">계정이 없으신가요?<a class="ml-2" href="/signup">Sign Up</a></small>
+{% block main %}
+<main role="main" class="container-fluid col-6 center-block">
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">로그인하세요!</legend>
+                {{form|crispy}}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Login</button>
             </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">계정이 없으신가요?<a class="ml-2" href="/signup">Sign Up</a></small>
         </div>
     </div>
 </main>
-{% endblock content %}
+{% endblock %}

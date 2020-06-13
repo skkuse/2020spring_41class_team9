@@ -1,13 +1,22 @@
-{% extends "searchProject/base2.html" %}
+{% extends "base.html" %}
+<!--{% load crispy_forms_tags %}-->
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
 
-{% block content %}
-    <article class="media content-section">
-        <div class="media-body">
+{% block main %}
+{% include 'search.html' %}
+{% endblock %}
+
+{% block post-content %}
+<article class="media content-section">
+    <div class="media-body">
         <div class="article-metadata">
             <a class="mr-2" href="#">{{ developer_list.profile_image_path }}</a>
             <small class="text-muted">{{ developer_list.name}}</small>
         </div>
         <p class="article-content">{{ developer_list.portfolio }}</p>
         <p class="article-content">Duration: {{developer_list.proposed_projects}}</p>
-        </div>
-{% endblock content %}
+    </div>
+</article>
+{% endblock %}
