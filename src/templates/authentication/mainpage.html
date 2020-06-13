@@ -5,31 +5,27 @@
 {% endblock %}
 
 {% block main %}
+<main>
+    <div class="" style="background-image: url('http://www.realmeter.net/wp-content/uploads/2015/11/151118-1.jpg'); background-repeat: no-repeat; background-size: cover; margin: 0 auto 0 auto; background-position: center; height: 100%; width: 100%; position: absolute; top:0;"></div>
 
-    <!-- Full Page Intro -->
-    <div class="view" style="background-image: url('http://www.realmeter.net/wp-content/uploads/2015/11/151118-1.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
-      <!-- Mask & flexbox options-->
-      <div class="mask rgba-black-light align-items-center">
-        <!-- Content -->
+    <div class="mask rgba-black-light align-items-center">
         <div class="container">
-          <!--Grid row-->
-          <div class="row">
-            <!--Grid column-->
-            <div class="col-md-12 mb-4 white-text text-center">
-              <h1 class="h1-reponsive white-text text-uppercase font-weight-bold mb-0 pt-md-5 pt-5 wow fadeInDown" data-wow-delay="0.3s"><strong>MODU</strong></h1>
-              <hr class="hr-light my-4 wow fadeInDown" data-wow-delay="0.4s">
-              <h5 class="text-uppercase mb-4 white-text " data-wow-delay="0.4s"><strong>Student Software Team Project Matching Service</strong></h5>
-              <h5 class="text-uppercase mb-4 white-text wow fadeInDown" data-wow-delay="0.4s"><strong>학생 소프트웨어 팀 결성 웹사이트</strong></h5>
-              <a class="btn btn-outline-white wow fadeInDown" data-wow-delay="0.4s">Signup</a>
-              <a class="btn btn-outline-white wow fadeInDown" data-wow-delay="0.4s">Login</a>
+            <div class="row justify-content-md-center">
+                <div class="col-md-7 pb-2 white-text text-center" style="background-color: #f8f9faa0;">
+                    <h1 class="h1-reponsive white-text text-uppercase font-weight-bold mb-0 pt-md-5 pt-5 wow fadeInDown" data-wow-delay="0.3s"><strong>MODU</strong></h1>
+                    <hr class="hr-light my-4 wow fadeInDown" data-wow-delay="0.4s">
+                    <h5 class="text-uppercase mb-4 white-text " data-wow-delay="0.4s"><strong>Student Software Team Project Matching Service</strong></h5>
+                    <h5 class="text-uppercase mb-4 white-text wow fadeInDown" data-wow-delay="0.4s"><strong>학생 소프트웨어 팀 결성 웹사이트</strong></h5>
+                    {% if user.is_authenticated %}
+                    <a class="btn btn-outline-white wow fadeInDown" data-wow-delay="0.4s" href="#">Profile</a>
+                    <a class="btn btn-outline-white wow fadeInDown" data-wow-delay="0.4s" href="/logout">Log Out</a>
+                    {% else %}
+                    <a class="btn btn-outline-white wow fadeInDown" data-wow-delay="0.4s" href="/signup">Sign Up</a>
+                    <a class="btn btn-outline-white wow fadeInDown" data-wow-delay="0.4s" href="/login">Log In</a>
+                    {% endif %}
+                </div>
             </div>
-            <!--Grid column-->
-          </div>
-          <!--Grid row-->
         </div>
-        <!-- Content -->
-      </div>
-      <!-- Mask & flexbox options-->
     </div>
+</main>
 {% endblock %}
-
