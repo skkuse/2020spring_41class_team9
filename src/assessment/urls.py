@@ -10,7 +10,7 @@ from .views import *
 urlpatterns = [
     # Uncomment the next line to enable the admin:
     #path('admin/', admin.site.urls)
-    path("/", project_list, name ="project_list" ),
-    path("/<int:p_id>", developer_list, name ="developer_list" ),
-    path("/<int:p_id>/<int:u_id>", assessment, name ="assessment" ),
+    path('', project_list.as_view()),
+    path('<int:p_id>', developer_list.as_view()),
+    path('<int:p_id>/<int:u_id>', assessment, name= "assessment")
 ]
