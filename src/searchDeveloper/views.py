@@ -1,22 +1,15 @@
-from django.shortcuts import render
-from django.db.models import Q
 from model.models import Developer
 from .forms import DeveloperSearchForm
-from django.views.generic.edit import FormView
-
+from search_views.search import SearchListView
+from search_views.filters import BaseFilter
 # Create your views here
-class SearchDeveloperFormView(FormView):
-    form_class = DeveloperSearchForm
-    template_name='searchDeveloper/developer.html'
-
-    def form_valid(self, form):
-        search_developer= self.request.DEVELOPER['search_developer']
-        developer_list=Developer.objects.filter(Q(u_id__icontains=search_developer))
-        context={}
-        context['form']=form
-        context['search_term']=search_developer
-        context['object_list']=developer_list
-
-        return render(self.request, self.teamplate_name, 
-        context)
-    
+class DeveloperFilter(BaseFilter):
+    search_fields ={
+        'search_developer' : ['developer name']
+    }
+class DeveloperSearchList(SearchListView):
+    model = Developer
+    paginate_by =10
+    template_name= "searchdeveloper.html"
+    form_class=DeveloperSearchForm
+    filter_class = DeveloperFilter
