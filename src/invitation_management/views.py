@@ -1,49 +1,54 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import ListView
 from django.contrib.auth.models import User
-from .models import Project, Developer, Invitation
-from django.http import HttpResponse
-import json
+from model.models import Project, Developer, Invitation
 
-# previous change: invitation inquiry is done through message
-# so here, we only deal with (1) developer inviting other developer in a project,
-# and (2) developer accepting or rejecting invitations
 # Create your views here.
 
-
-def invite(request, userID):
+class InviteListView(ListView):
     
-    subject = get_object_or_404(Developer, request.POST[userID])
-    developer = get_object_or_404(Developer, u_id = request.session['u_id'])
+    context_object_name = 'invite_list'
+    template_name = 'searchDeveloper/invitationlist.html'
+    paginate_by = 10
     
-    check = developer.invite.filter(u_id = request.POST[userID])
+    def get_queryset(self):
+        developer = get_object_or_404(Developer, uID = self.request.session.get('uID'))
+        queryset = Invitation.objects.filter(receiver = developer)
 
-    if check.exists():
-        developer.invite.remove(subject)
-        message = "invite"
+        return queryset.order_by('sent_time')
 
-    else :
-        developer.invite.add(subject)
-        message = "cancel invite"
+@login_required   
+def invite_accept(request, pID, uID):
 
-    context = {
-        'message' : message,    
-    }
+    if request.method == "POST":
+        developer = get_object_or_404(Developer, uID = uID)
+        project = get_object_or_404(Project, pID = pID)
+        invitation = get_object_or_404(Invitation, receiver = developer)
+        
+        developer.member_of.add(project)
+        #invitation.is_accepted = True
+        #invitation.save()
+        invitation.project.remove(project)
 
-def invitationAccept(request, userID):
+        return redirect('InviteList')
     
-    invitation = get_object_or_404(Invitation, request.POST['i_id'])
-    i_id = request
-    u_id = request.session['u_id']
-
-    check = invitation.object.filter(i_id = i_id)
-
-    # Accept
-    if check.exists():
-        check.is_accepted = TRUE
-        return check.remove(i_id)
-    # Reject
     else:
-        check.is_accepted = FALSE
-        return
+        return render(request, 'searchDeveloper/invitationlist.html')
+
+
+@login_required
+def invite_reject(request, pID, uID):
+
+    if request.method == "POST":
+        developer = get_object_or_404(Developer, uID = uID)
+        project = get_object_or_404(Project, pID = pID)
+        invitation = get_object_or_404(Invitation, receiver = developer)
+        
+        invitation.project.remove(project)
+        #invitation.is_accepted = False
+        #invitation.save()
+        return redirect('InviteList')
     
-    return redirect('/mypage/invitation/'+str(userID))
+    else:
+        return render(request, 'searchDeveloper/invitationlist.html')
+      
