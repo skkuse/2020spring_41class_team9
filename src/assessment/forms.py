@@ -6,17 +6,17 @@ class AssessmentForm(forms.ModelForm):
     class Meta:
         model = Assessment
         fields = [
-            'ideation score',
-            'development score',
-            'communication score',
-            'etc. score',
+            'ideation_score',
+            'development_score',
+            'communication_score',
+            'etc_score',
             'opinion'
         ]
         widgets ={
-            'ideation score' : starWidget,
-            'development score' : starWidget,
-            'communication score' : starWidget,
-            'etc. score' : starWidget,
+            'ideation_score' : starWidget,
+            'development_score' : starWidget,
+            'communication_score' : starWidget,
+            'etc_score' : starWidget,
             'opinion': CounterTextInput,
         }
         
