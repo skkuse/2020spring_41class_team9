@@ -5,12 +5,6 @@ from model.models import Project, Developer, Invitation
 
 # Create your views here.
 
-# developer 초대 버튼 클릭시
-def invite_button
-
-
-
-
 class InviteListView(ListView):
     
     context_object_name = 'invite_list'
@@ -54,4 +48,3 @@ def invite_reject(request, project, uID):
         queryset.is_accepted = False #?
 
         return queryset.order_by('sent_time')
-      

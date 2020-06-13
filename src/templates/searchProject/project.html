@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+<!--{% load crispy_forms_tags %}-->
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+{% block main %}
+{% include 'searchproject.html' %}
+{% endblock %}
+
+{% block post-content %}
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="#">{{ project_list.proposer_name }}</a>
+            <small class="text-muted">{{ project_list.created_time}}</small>
+        </div>
+        <h2><a class="article-title" href="#">{{ project_list.project_name }}</a></h2>
+        <p class="article-content">{{ project_list.project_simple_info }}</p>
+        <p class="article-content">Duration: {{project_list.duration_choices}}</p>
+    </div>
+</article>
+{% endblock %}

@@ -16,16 +16,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import include, path
-from django.views.generic.base import RedirectView
-
-favicon_view = RedirectView.as_view(url='/static/favicon/favicon.ico', permanent=True)
+from .views import *
+from . import views
+from django.urls import path
 
 urlpatterns = [
-    path('', include('authentication.urls')),
-    path('project/', include('searchProject.urls')),
-    path('developer/', include('searchDeveloper.urls')),
-    path('project/', include('project.urls')),
-    path('mypage/assessment/', include('assessment.urls')),
-    path('favicon.ico', favicon_view),
+    path('signup', UserRegistrationView.as_view()),
+    path('login', UserLoginView.as_view()),
+    path('logout', UserLogoutView.as_view()),
+    path('', views.mainpage),
 ]
