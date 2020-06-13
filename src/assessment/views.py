@@ -18,7 +18,7 @@ class Project_list(ListView):
 
     def get_queryset(self):
 
-        queryset = Developer.objects.filter(uID = self.request.session.get('uID'))#.value('participating_project')
+        queryset = Developer.objects.filter(uID = self.request.session.get('uID'))#.value('member_of')
 
         #이미 평가가 완료된 프로젝트 제외
 
@@ -29,11 +29,11 @@ class Project_list(ListView):
 
         result = queryset
 
-        for participating_project in queryset :
+        for member_of in queryset :
             #하나의 프로젝트에 대해 유저가 작성한 평가들
-            queryset3 = queryset2.filter(project = participating_project)
+            queryset3 = queryset2.filter(project = member_of)
             #해당 프로젝트의 멤버 목록
-            mem = get_object_or_404(memberModel, project = participating_project)
+            mem = get_object_or_404(memberModel, project = member_of)
             #작성되지 않은 평가가 있는지의 여부
             flag = 0
             for member in mem :
@@ -42,7 +42,7 @@ class Project_list(ListView):
                     break 
             #해당 프로젝트에 대한 모든 평가가 작성 되었을 경우
             if flag == 0 :
-                result = result.exclude(participating_project = participating_project)
+                result = result.exclude(member_of = member_of)
 
         try:
             return result
@@ -63,7 +63,7 @@ class Developer_list(ListView):
     def get_queryset(self, **kwargs):    
         project = get_object_or_404(Project, pID = **kwargs)
         queryset = Developer.objects.all()
-        queryset = queryset.filter(participating_project = project)
+        queryset = queryset.filter(member_of = project)
         #자기 자신 제외
         queryset = queryset.exclude(uID = self.request.session.get('uID'))#.valude('username') 
         #이미 작성된 경우 제외
