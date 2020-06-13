@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<div class="container">
+    {{form.media}}
+    <form action={%url "assessment" p_id=1 u_id=2 %} method = "POST">
+        <table>
+            {{form.as_table}}
+        </table>
+        <h4> Ideation score :</h4>
+        <input type="rating" name='ideation score' value="5" required="" id="id_ideation" min="0" max="5" step="1" style="display: none">
+        <div id="star_id_ideation" class="rateit rateit-bg" data-reteit-backingfld="#id_ideation">
+        </div>
+        <br>
+        <h4> Development score :</h4>
+        <input type="rating" name='development score' value="5" required="" id="id_development" min="1" max="5" step="1" style="display: none">
+        <div id="star_id_development" class="rateit rateit-bg" data-reteit-backingfld="#id_development">
+        </div>
+        <br>
+        <h4> communication score :</h4>
+        <input type="rating" name='communication score' value="5" required="" id="id_communication" min="1" max="5" step="1" style="display: none">
+        <div id="star_id_communication" class="rateit rateit-bg" data-reteit-backingfld="#id_communication">
+        </div>
+        <br>
+        <h4> etc. score :</h4>
+        <input type="rating" name='etc score' value="5" required="" id="star_id_etc" min="1" max="5" step="1" style="display: none">
+        <div id="star_id_etc" class="rateit rateit-bg" data-reteit-backingfld="#id_etc">
+        </div>
+        <br><br>
+        <h4> Opinion </h4>
+        <textarea name="opinion" id="" cols="40" rows="10"></textarea>
+
+        
+
+
+        <br><br>
+        <button type="submit" class="btn btn-primary">작성완료</button>
+    </form>
+</div>
+
+{% endblock %}

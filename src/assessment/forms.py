@@ -1,6 +1,6 @@
 from django import forms
 from model.models import Assessment, Developer
-from assessment.widgets import CounterTextInput, starWidget
+from .widgets import CounterTextInput, starWidget
 
 
 class AssessmentForm(forms.ModelForm):
