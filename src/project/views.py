@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 @method_decorator(login_required, name='dispatch')
 class ProjectCreateView(CreateView):
     model = Project
-    fields = ['project name', 'purpose', 'output', 'status', 'duration', 'simple info', 'detailed info',]
+    fields = ['name', 'purpose', 'output', 'status', 'duration', 'simple_info', 'detailed_info',]
     template_name = 'searchProject/addproject.html'
 
     def form_valid(self, form):

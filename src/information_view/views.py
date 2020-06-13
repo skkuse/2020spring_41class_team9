@@ -15,6 +15,6 @@ def project_detail_view(request, primary_key):
 
 def developer_detail_view(request, primary_key):
     developer = get_object_or_404(Developer, pk=primary_key)
-    return render(request, 'developer/project_detail.html', context={'developer': developer})
+    return render(request, 'developer/developer_detail.html', context={'developer': developer})
 
 

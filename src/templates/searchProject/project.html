@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 <!--{% load crispy_forms_tags %}-->
 {% block header %}
 {% include 'header.html' %}
@@ -26,7 +26,7 @@
                 </div>
                 <h2><a class="article-title" href="/project/{{ project.pID }}">{{ project.name }}</a></h2>
                 <p class="article-content">{{ project.simple_info }}</p>
-                <p class="article-content">Duration: {{project.duration }}</p>
+                <p class="article-content">진행 기간: {{project.duration }}</p>
             </div>
         </article>
         {% empty %}
