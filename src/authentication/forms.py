@@ -22,8 +22,7 @@ class CustomAuthenticationForm(forms.Form):
 
     error_messages = {
         'invalid_login': _(
-            "Please enter a correct %(email)s and password. Note that both "
-            "fields may be case-sensitive."
+            "Please enter a correct %(email)s and password. Note that both fields may be case-sensitive."
         ),
         'inactive': _("This account is inactive."),
     }
@@ -81,7 +80,7 @@ class CustomAuthenticationForm(forms.Form):
         return forms.ValidationError(
             self.error_messages['invalid_login'],
             code='invalid_login',
-            params={'email': self.email_field.verbose_name},
+            params={'email': 'user email'},
         )
 
 
@@ -134,8 +133,9 @@ class CustomUserCreationForm(forms.ModelForm):
                 self.add_error('password2', error)
 
     def save(self, commit=True):
-        user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
-        if commit:
-            user.save()
+        email = self.cleaned_data["email"]
+        username = self.cleaned_data["name"]
+        password = self.cleaned_data["password2"]
+        print('CustomUserCreationForm save called', commit)
+        user = Developer.objects.create_user(email, username, password, commit)
         return user

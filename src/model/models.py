@@ -1,11 +1,14 @@
 import random
 import datetime
+import requests
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 from taggit.managers import TaggableManager
 from django.core.exceptions import ValidationError
-import settings
+from MODU.settings import FIREBASE_API_KEY
 from django.contrib.auth.models import BaseUserManager
+from django.utils.translation import gettext, gettext_lazy as _
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -23,6 +26,12 @@ class Project(models.Model):
         verbose_name = 'project name',
         name = 'project name',
         max_length = 100)
+
+    proposer = models.ForeignKey(
+        'Developer',
+        on_delete = models.CASCADE,
+        related_name = 'proposed_projects',
+        related_query_name = 'proposed_project')
 
     purpose = models.TextField(
         verbose_name = 'purpose of project',
@@ -148,71 +157,113 @@ class Comment(models.Model):
             self.comment_text)
 
 class CustomUserManager(BaseUserManager):
-    def filter_email(email = None):
+    def filter_email(self, email = None):
         return True # TODO: filter email
 
-    def firebase_try_sign_up(email = None, password = None):
+    def firebase_try_sign_up(self, email = None, password = None):
         if not email or not password:
             return None
         URL = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + FIREBASE_API_KEY
         payload = dict(email = email, password = password, returnSecureToken = True)
         response = requests.post(URL, data = payload)
+        print('firebase_try_sign_up', response)
         if response.status_code != 200:
             return None
         return response.json()['idToken']
     
-    def firebase_send_email_verification(id_token):
+    def firebase_send_email_verification(self, id_token = None):
         if id_token is None:
             return False
         URL = 'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=' + FIREBASE_API_KEY
-        payload = dict({"X-Firebase-Locale" : 'ko-kr'})
+        payload = dict({"X-Firebase-Locale" : 'ko-kr', "requestType" : 'VERIFY_EMAIL', "idToken" : id_token})
         response = requests.post(URL, data = payload)
+        print('firebase_send_email_verification', response)
         if response.status_code != 200:
             return False
         return True
 
-    def create_user(self, email, username, is_active, password = None):
-        print('create_user called')
+    def firebase_delete_account(id_token=None):
+        if id_token is None:
+            return False
+        URL = 'https://identitytoolkit.googleapis.com/v1/accounts:delete?key=' + FIREBASE_API_KEY
+        payload = dict(idToken = id_token)
+        response = requests.post(URL, data = payload)
+        print('firebase_delete_account', response)
+        if response.status_code != 200:
+            return False
+        return True
+
+    def create_user(self, email, username, password = None, commit=False, **kwargs):
+        print('create_user called', commit)
+
         if not email:
-            raise ValueError(_('Users must have an email address'))
+            raise ValidationError(_('Users must have an email address.'))
 
         email = self.normalize_email(email)
 
-        if not filter_email(email):
-            raise ValueError(_('User need school mail address'))
+        if not self.filter_email(email):
+            raise ValidationError(_('User need school mail address'))
 
         if not username:
-            raise ValueError(_('Users must have an username'))
+            raise ValidationError(_('Users must have an username.'))
         
         if not password:
-            raise ValueError(_('Users must have a password'))
-        
-        print('test')
+            raise ValidationError(_('Users must have a password.'))
 
         user = self.model(
             email = self.normalize_email(email),
-            username = username,
-            password = set_unusable_password(),
+            name = username,
+            password = self.model.set_unusable_password(self.model),
             is_active = False,
             # TODO: how to add imagefield?
             portfolio = '')
 
-        print('test')
+        if not commit:
+            return user
 
-        id_token = firebase_try_sign_up(email, password)
+        id_token = self.firebase_try_sign_up(email, password)
         if id_token is not None:
             try:
-                user = User.objects.get(email=email)
-                if user.is_active:
-                    return None
-                else:
-                    firebase_send_email_verification(id_token)
-                    return user
-            except User.DoesNotExist:
-                raise RuntimeError('The account exists in firebase, but not exists in django.')
+                u = self.model.objects.get(email=email)
+                raise ValidationError('The account not exists in firebase, but already exists in django.')
+
+            except self.model.DoesNotExist:
+                print("user created.")
+
+                self.firebase_send_email_verification(id_token)
+                print("user verification sent.")
+
+                user.id_token = id_token
+                user.save(using=self._db)
+                return user
+
         else:
-            user.save(using=self._db)
-            return user
+            try:
+                u = self.model.objects.get(email=email)
+                if u.is_active:
+                    raise ValidationError('The email is already in use.')
+                else:
+                    print("unverified user.")
+
+                    delete_result = firebase_delete_account(id_token)
+                    if not delete_result:
+                        print("failed to delete unverified user. return None.")
+                        return None
+                    u.delete()
+                    print("previous unverified user deleted.")
+
+                    id_token = self.firebase_try_sign_up(email, password)
+                    print("user created.")
+
+                    self.firebase_send_email_verification(id_token)
+                    print("user verification sent.")
+
+                    user.id_token = id_token
+                    user.save(using=self._db)
+                    return user
+
+            except self.model.DoesNotExist:
+                raise ValidationError('The account already exists in firebase or not made in firebase, and not exists in django.')
 
     def create_superuser(username_field, password=None, **other_fields):
         return None
@@ -223,10 +274,15 @@ class Developer(AbstractBaseUser):
     u_id = models.AutoField(
         verbose_name = 'user ID',
         name = 'uID',
-        primary_key=True,
-        unique=True)
+        primary_key = True,
+        unique = True)
 
     USERNAME_FIELD = 'uID'
+
+    id_token = models.TextField(
+        verbose_name = 'id_token',
+        name = 'id_token',
+        unique = True)
 
     username = models.CharField(
         verbose_name = 'user name',
@@ -238,12 +294,19 @@ class Developer(AbstractBaseUser):
         name = 'email',
         unique=True,
         blank = False)
+    
+    password = models.CharField(
+        _('password'),
+       max_length=128,
+       null = True,
+       blank = True)
 
     EMAIL_FIELD = 'email'
 
     is_active = models.BooleanField(
         verbose_name = 'verified with email',
-        name = 'is verified')
+        name = 'is_active',
+        default=False)
 
     def validate_file_size(value):
         filesize = value.size
@@ -267,12 +330,6 @@ class Developer(AbstractBaseUser):
         name = 'portfolio',
         max_length = 5000,
         blank = True)
-
-    proposed_projects = models.ForeignKey(
-        'Project',
-        on_delete = models.CASCADE,
-        related_name = 'proposed_projects',
-        related_query_name = 'proposed_project')
 
     invite = models.ManyToManyField(
         'Project',
