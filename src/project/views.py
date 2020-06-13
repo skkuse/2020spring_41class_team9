@@ -1,8 +1,26 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import CreateView
 from model.models import Project, Comment, Developer
-from .form import ProjectPost, CommentPost
+from project.form import ProjectPost, CommentPost
+from django.utils.decorators import method_decorator
+
 # Create your views here.
+
+@method_decorator(login_required, name='dispatch')
+class ProjectCreateView(CreateView):
+    model = Project
+    fields = ['project name', 'purpose', 'output', 'status', 'duration', 'simple info', 'detailed info',]
+    template_name = 'searchProject/addproject.html'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        u_id = self.request.user.uID
+        developer = Developer.objects.get(uID = u_id)
+        self.object.proposer = developer
+        self.object.save()
+        developer.member_of.add(self.object)
+        return redirect('/project/' + str(self.object.pID))
 
 @login_required
 def write(request):
