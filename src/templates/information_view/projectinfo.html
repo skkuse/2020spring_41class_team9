@@ -4,22 +4,16 @@
     <div class="content-section">
       <div class="media">
         <div class="media-body">
-          <h2 class="account-heading">{{ post.proposer_name }}</h2>
-          <p class="text-secondary">{{ user.email }}</p>
-          <button type="submit" class="btn btn-primary">Favorite</button>
+          <h2 class="account-heading">{{ project_info.proposer }}</h2>
+{#          <p class="text-secondary">{{ user.email }}</p>                  #}
+{#        <button type="submit" class="btn btn-primary">Favorite</button>   #}
         </div>
     </div>
-      <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">프로필 정보</legend>
-                <p class="article-content">Portfolio: {{ post.portfolio }}</p>
-                <p class="article-content">Projects: </p>
-                <p class="article-content">{{ post.proposed_projects }}</p>
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Update</button>
-            </div>
-        </form>
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4">프로젝트 정보</legend>
+            <p class="article-content">purpose: {{ project_info.purpose}}</p>
+            <p class="article-content">expected output: </p>
+            <p class="article-content">{{ project_info.output }}</p>
+    </fieldset>
     </div>
 {% endblock content %}

@@ -1,16 +1,12 @@
 ﻿{% extends "base.html" %}
-<!--{% load crispy_forms_tags %}-->
+{% load crispy_forms_tags %}
 {% block header %}
 {% include 'header.html' %}
 {% endblock %}
 
 {% block main %}
-<main role="main" class="container">
+<main role="main" class="container center-block">
     <div class="row">
-        <!--<form class="form-inline ml-auto">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>-->
         <form class="form-inline ml-auto" action="" method="GET">
             <button type="submit" class="btn btn-success ml-auto mr-2">+Add Project</button>
             {{ form|crispy }}
@@ -18,26 +14,50 @@
         </form>
     </div>
     <div class="row">
-        {% for project in object_list %}
+        {% for project in page_obj %}
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-        <article class="media content-section">
-            <div class="media-body">
-                <div class="article-metadata">
-                    <a class="mr-2" href="/developer/{{ project.proposer.uID }}">{{ project.proposer.name }}</a>
-                    <small class="text-muted">{{ project.created_time }}</small>
-                    <button type="submit" class="btn btn-primary ml-auto">Favorite</button>
+            <article class="media content-section">
+                <div class="media-body">
+                    <div class="article-metadata">
+                        <a class="mr-2" href="/developer/{{ project.proposer.uID }}">{{ project.proposer.name }}</a>
+                        <small class="text-muted">{{ project.created_time }}</small>
+                        <button type="submit" class="btn btn-primary ml-auto">Favorite</button>
+                    </div>
+                    <h5><a class="article-title" href="/project/{{ project.pID }}">{{ project.name }}</a></h5>
+                    <p class="article-content">{{ project.simple_info }}</p>
+                    <p class="article-content">진행 기간: {{project.duration }}</p>
                 </div>
-                <h5><a class="article-title" href="/project/{{ project.pID }}">{{ project.name }}</a></h5>
-                <p class="article-content">{{ project.simple_info }}</p>
-                <p class="article-content">진행 기간: {{project.duration }}</p>
-            </div>
-        </article>
+            </article>
         </div>
         {% empty %}
         <div>
             Empty Result.
         </div>
         {% endfor %}
+    </div>
+
+    <div class="row center-block">
+        <ul class="pagination center-block ml-auto mr-auto">
+            <li><span class="page-link" href="?page=1">First</span></li>
+
+            {% if page_obj.has_previous %}
+            <li class="page-item"><span class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</span></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link" href="?page=#">Previous</span></li>
+            {% endif %}
+
+            <li class="page-item active"><span class="page-link">{{ page_obj.number }}<span class="sr-only">(current)</span></span></li>
+
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+            <li class="page-item"><span class="page-link" href="?page={{ page_obj.next_page_number }}">Next</span></li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link" href="?page=#">Next</span></li>
+            {% endif %}
+
+            <li><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+        </ul>
     </div>
 </main>
 {% endblock %}

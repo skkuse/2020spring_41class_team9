@@ -1,38 +1,34 @@
 {% extends "base.html" %}
-<!--{% load crispy_forms_tags %}-->
+{% load crispy_forms_tags %}
 {% block header %}
 {% include 'header.html' %}
 {% endblock %}
 
 {% block main %}
-<main role="main" class="container">
+<main role="main" class="container center-block">
     <div class="row">
-        <!--<form class="form-inline ml-auto">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>-->
         <form class="form-inline ml-auto" action="" method="GET">
             {{ form|crispy }}
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
     </div>
     <div class="row">
-        {% for developer in object_list %}
+        {% for developer in page_obj %}
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-        <article class="media content-section">
-            <div class="media-body">
-                <div class="article-metadata">
-                    <form class="form-inline">
-                        <a class="mr-2" href="#">{{ developer.profile_image_path }}</a>
-                        <h3 class="text-muted">{{ developer.name }}</h3>
-                        <button type="submit" class="btn btn-primary ml-auto">Follow</button>
-                    </form>
+            <article class="media content-section">
+                <div class="media-body">
+                    <div class="article-metadata">
+                        <form class="form-inline">
+                            <a class="mr-2" href="#">{{ developer.profile_image_path }}</a>
+                            <h3 class="text-muted">{{ developer.name }}</h3>
+                            <button type="submit" class="btn btn-primary ml-auto">Follow</button>
+                        </form>
+                    </div>
+                    <p class="article-content">{{ developer.portfolio }}</p>
+                    <p class="article-content">{{developer.proposed_projects}}</p>
                 </div>
-                <p class="article-content">{{ developer.portfolio }}</p>
-                <p class="article-content">{{developer.proposed_projects}}</p>
-            </div>
+            </article>
         </div>
-        </article>
         {% empty %}
         <div>
             Empty Result.
@@ -40,5 +36,28 @@
         {% endfor %}
     </div>
 
+    <div class="row center-block">
+        <ul class="pagination center-block ml-auto mr-auto">
+            <li><span class="page-link" href="?page=1">First</span></li>
+
+            {% if page_obj.has_previous %}
+            <li class="page-item"><span class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</span></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link" href="?page=#">Previous</span></li>
+            {% endif %}
+
+            <li class="page-item active"><span class="page-link">{{ page_obj.number }}<span class="sr-only">(current)</span></span></li>
+
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+            <li class="page-item"><span class="page-link" href="?page={{ page_obj.next_page_number }}">Next</span></li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link" href="?page=#">Next</span></li>
+            {% endif %}
+
+            <li><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+        </ul>
+    </div>
 </main>
 {% endblock %}
