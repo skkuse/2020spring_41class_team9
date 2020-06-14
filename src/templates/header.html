@@ -13,10 +13,14 @@
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
-                    <a class="nav-item nav-link" href="#">Profile</a>
+                    <a class="nav-item nav-link" href="/mypage/notifications">Notification</a>
+                    <span class="nav-item nav-link">|</span>
+                    <a class="nav-item nav-link" href="/developer/{{ user.pk }}/edit">Profile 수정</a>
+                    <span class="nav-item nav-link">|</span>
                     <a class="nav-item nav-link" href="/logout">Log Out</a>
                     {% else %}
                     <a class="nav-item nav-link" href="/signup">Sign Up</a>
+                    <span class="nav-item nav-link">|</span>
                     <a class="nav-item nav-link" href="/login">Log In</a>
                     {% endif %}
                 </div>
