@@ -22,7 +22,7 @@
             <p class="article-content">Portfolio: {{ developer.portfolio }}</p>
             <p class="article-content">Projects: </p>
             {% for participating_project in developer.member_of.all %}
-                <a href="{% url 'project/<pk>' project.pID %}">{{ participating_project.name }}</a>
+                <a href="project/{{ participating_project.pID }}">{{ participating_project.name }}</a>
                 <!-- TODO: 프로젝트 참여 정보 간단히 -->
             {% empty %}
             <div>
