@@ -167,7 +167,7 @@ class CustomUserManager(BaseUserManager):
         URL = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + FIREBASE_API_KEY
         payload = dict(email = email, password = password, returnSecureToken = True)
         response = requests.post(URL, data = payload)
-        print('firebase_try_sign_up', response)
+        print('firebase_try_sign_up', response, response.json())
         if response.status_code != 200:
             return None
         return response.json()['idToken']
