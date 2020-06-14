@@ -106,3 +106,43 @@ a.article-title:hover {
     overflow:hidden;
     border:none;
 }
+.btn-invite{
+    display: inline-block;
+    width: 70px;
+    height: 30px;
+    background:url('/static/favicon/invite.png');
+    background-position: 0px 0px;
+    text-indent: -9999px;
+    overflow:hidden;
+    border:none;
+}
+.btn-invite.active{
+    display: inline-block;
+    width: 70px;
+    height: 30px;
+    background:url('/static/favicon/invite_off.png');
+    background-position: 0px 0px;
+    text-indent: -9999px;
+    overflow:hidden;
+    border:none;
+}
+.btn-accept{
+    display: inline-block;
+    width: 70px;
+    height: 30px;
+    background:url('/static/favicon/accept.png');
+    background-position: 0px 0px;
+    text-indent: -9999px;
+    overflow:hidden;
+    border:none;
+}
+.btn-deny{
+    display: inline-block;
+    width: 70px;
+    height: 30px;
+    background:url('/static/favicon/deny.png');
+    background-position: 0px 0px;
+    text-indent: -9999px;
+    overflow:hidden;
+    border:none;
+}

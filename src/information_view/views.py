@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
-from model.models import Project, Developer, followModel
+from model.models import Project, Developer, followModel, Notification
 from django.views.generic import DetailView
 
 from django.views.generic.base import View
@@ -8,6 +8,8 @@ from django.http import HttpResponseForbidden, HttpResponseRedirect
 from urllib.parse import urlparse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+
+from django.utils import timezone
 
 
 # Create your views here.
@@ -67,8 +69,17 @@ class Follow(View) :
             if not flag:
                 user.follow.remove(followee)
                 fol.delete()
+                message = user.name + "님께서 " + followee.name + "님을 언팔로우 하셨습니다."
+                noti = Notification(is_read = False, sent_time = timezone.datetime.now(), text = message, receiver = followee)
+                noti.save()
+
             else:
                 user.follow.add(followee)
+                message = user.name + "님께서 " + followee.name + "님을 팔로우 하셨습니다."
+                noti = Notification(is_read = False, sent_time = timezone.datetime.now(), text = message, receiver = followee)
+                noti.save()
+
+
 
         referer_url = request.META.get('HTTP_REFERER')
         path = urlparse(referer_url).path

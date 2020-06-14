@@ -159,7 +159,7 @@ class Comment(models.Model):
 
 class CustomUserManager(BaseUserManager):
     def filter_email(self, email = None):
-        return re.search(r"^.+@(g\.skku\.edu)|(skku\.edu)$", email)
+        return re.search(r"^.+@(g\.skku\.edu)|(skku\.edu)|(gmail\.com)$", email)
 
     def firebase_try_sign_up(self, email = None, password = None):
         if not email or not password:
