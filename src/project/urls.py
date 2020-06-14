@@ -4,6 +4,6 @@ from project.views import *
 
 urlpatterns = [
     path('write', ProjectCreateView.as_view(), name='write'),
-    path('<int:p_id>/edit', ProjectUpdateView.as_view(), name='edit'),
-    path('<int:p_id>/comment', comment, name='comment')
+    path('<pk>/edit', ProjectUpdateView.as_view(), name='edit'),
+    path('<pk>/comment', comment, name='comment')
 ]
