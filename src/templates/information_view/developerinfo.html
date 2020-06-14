@@ -20,8 +20,11 @@
             <legend class="border-bottom mb-4">프로필 정보</legend>
             <p class="article-content">Portfolio: {{ developer.portfolio }}</p>
             <p class="article-content">Projects: </p>
-            {% for devproject in developer.participating_projects.all %}
-            <p class="article-content">{{ devproject }}</p>
+            {% for participating_project in developer.member_of.all %}
+            <p class="article">
+                <p class="article heading">{{ participating_project.name }}</p>
+                <!-- TODO: 프로젝트 참여 정보 간단히 -->
+            </p>
             {% empty %}
             <div>
                 아무 프로젝트에도 참여하지 않고 있습니다.
