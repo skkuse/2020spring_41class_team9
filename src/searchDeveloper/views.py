@@ -5,7 +5,7 @@ from search_views.filters import BaseFilter
 # Create your views here
 class DeveloperFilter(BaseFilter):
     search_fields ={
-        'search_developer' : ['name',]
+        'search_developer' : ['name','major','languages']
     }
 class DeveloperSearchList(SearchListView):
     model = Developer
