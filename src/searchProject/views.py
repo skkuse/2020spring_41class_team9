@@ -5,7 +5,7 @@ from search_views.filters import BaseFilter
 # Create your views here
 class ProjectFilter(BaseFilter):
     search_fields ={
-        'search_project' : ['name',]
+        'search_project' : ['name','simple_info','purpose','detailed_info'],
     }
 class ProjectSearchList(SearchListView):
     model = Project
