@@ -1,16 +1,27 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
-{% block content %}
-    
-    <div>
-        <p class="article-content">purpose:</p>
-        <p class="article-content">{{ project_info.purpose }}</p>
-        <p class="article-content">expected output: </p>
-        <p class="article-content">{{ project_info.output }}</p>
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+{% block main %}
+
+
+<main role="main" class="container center-block">
+    <div class="content-section">
+        <div class="media">
+            <div class="media-body">
+                <h2 class="account-heading">{{ project.name }}</h2>
+                <p class="text-secondary">{{ project.purpose }}</p>
+                <button type="submit" class="btn btn-primary">Follow</button>
+            </div>
+        </div>
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">프로필 정보</legend>
+            <p class="article-content">Portfolio: {{ project.output }}</p>
+            <p class="article-content">Projects: </p>
+        </fieldset>
     </div>
-
-    <h1>{{project_info.project_name}}</h1>
-    
-
-
-{% endblock content %}
+</main>
+{% endblock %}
