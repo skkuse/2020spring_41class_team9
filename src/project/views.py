@@ -41,6 +41,10 @@ class ProjectUpdateView(UserPassesTestMixin,UpdateView):
         proj = self.get_object()
         return self.request.user == proj.proposer
 
+    def get_success_url(self):
+        proj = self.get_object()
+        return '/project/' + str(proj.pID)
+
 @login_required
 @require_http_methods(["POST"])
 def comment(request, pk):
