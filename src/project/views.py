@@ -4,6 +4,7 @@ from django.views.generic.edit import CreateView,UpdateView
 from model.models import Project, Comment, Developer
 from project.form import ProjectPost, CommentPost
 from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 # Create your views here.
 
