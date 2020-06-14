@@ -11,13 +11,15 @@ from django.views.generic import DetailView
 
 class Project_detail_view(DetailView):
     model = Project
-    template_name = "projectinfo"
-    context_object_name = "project_info"
+    fields = ['name', 'purpose', 'output', 'status', 'duration', 'simple_info', 'detailed_info',]
+    template_name = "information_view/projectinfo.html"
+    context_object_name = "project"
 
 
 
 class Developer_detail_view(DetailView):
     model = Developer
-    template_name = "developerinfo"
-    context_object_name = "developer_info"
+    fields = ['name', 'email','major', 'languages', 'portfolio', 'projects_invited_to',]
+    template_name = "information_view/developerinfo.html"
+    context_object_name = "developer"
 
