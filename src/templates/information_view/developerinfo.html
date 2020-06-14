@@ -14,7 +14,9 @@
             <div class="media-body">
                 <h2 class="account-heading">{{ developer.name }}</h2>
                 <p class="text-secondary">{{ developer.email }}</p>
+                    {% if developer != user %}
                     <a href="{% url 'follow' developer.uID %}" class="btn-ff {%if developer in user.follow.all %} active {%endif%}">follow</a>
+                    {% endif %}
             </div>
         </div>
         <fieldset class="form-group">
