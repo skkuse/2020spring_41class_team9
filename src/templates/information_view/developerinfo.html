@@ -14,7 +14,7 @@
             <div class="media-body">
                 <h2 class="account-heading">{{ developer.name }}</h2>
                 <p class="text-secondary">{{ developer.email }}</p>
-                    <a href="{% url 'follow' developer.uID %}" class="btn-ff {%if developer in user.follow.all %} active {%endif%}">follow</a>
+                    <a href="{% url 'follow' developer.uID %}" class="btn-ff {%if developer in user.follow.all %} active {%endif%}">{{ user.followers.all.count }} follow</a>
             </div>
         </div>
         <fieldset class="form-group">
@@ -22,10 +22,8 @@
             <p class="article-content">Portfolio: {{ developer.portfolio }}</p>
             <p class="article-content">Projects: </p>
             {% for participating_project in developer.member_of.all %}
-            <p class="article">
-                <p class="article heading">{{ participating_project.name }}</p>
+                <a href="{% url 'project/<pk>' project.pID %}">{{ participating_project.name }}</a>
                 <!-- TODO: 프로젝트 참여 정보 간단히 -->
-            </p>
             {% empty %}
             <div>
                 아무 프로젝트에도 참여하지 않고 있습니다.
