@@ -29,5 +29,7 @@ urlpatterns = [
     path('mypage/assessment/', include('assessment.urls')),
     path('', include('information_view.urls')),
     path('favicon.ico', favicon_view),
-    path('portfolio/', include('portfolio.urls'))
+    path('portfolio/', include('portfolio.urls')),
+    path('', include('invitation_management.urls')),
+    
 ]
