@@ -13,3 +13,4 @@ class DeveloperSearchList(SearchListView):
     template_name= "searchDeveloper/developer.html"
     form_class = DeveloperSearchForm
     filter_class = DeveloperFilter
+    ordering = 'uID'

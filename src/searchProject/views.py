@@ -13,3 +13,4 @@ class ProjectSearchList(SearchListView):
     template_name= "searchProject/project.html"
     form_class = ProjectSearchForm
     filter_class = ProjectFilter
+    ordering = '-created_time'
