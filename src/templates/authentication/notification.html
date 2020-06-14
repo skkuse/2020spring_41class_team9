@@ -7,21 +7,17 @@
 
 {% block main %}
 <main role="main" class="container center-block">
-    <div class="row">
+    <div class="row ">
         {% for notification in page_obj %}
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            <article class="media content-section">
+            <article class="media content-section" style="width:100%">
                 <div class="media-body">
-                    <p class="">{{ notification.text }}</p>
-                    <p class="">{{ notification.text }}</p>
+                    <small class="text-muted">{{ notification.sent_time }}</small>
+                    <p class="article-content">{{ notification.text }}</p>
                     <!-- TODO: apply style -->
                 </div>
             </article>
-        </div>
         {% empty %}
-        <div>
-            No notification available.
-        </div>
+        <p class="article-content">No notification available.</p>
         {% endfor %}
     </div>
 

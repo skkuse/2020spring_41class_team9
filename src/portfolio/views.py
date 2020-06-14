@@ -17,11 +17,11 @@ class PortfolioUpdateView(UserPassesTestMixin,UpdateView):
 
     def test_func(self):
         developer = self.get_object()
-        return self.request.user == self.object.uID
+        return self.request.user == developer
 
     def get_success_url(self):
         developer = self.get_object()
-        return '/developer/' + str(self.object.uID)
+        return '/developer/' + str(developer.uID)
 
 
 

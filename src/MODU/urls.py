@@ -31,5 +31,4 @@ urlpatterns = [
     path('favicon.ico', favicon_view),
     path('portfolio/', include('portfolio.urls')),
     path('', include('invitation_management.urls')),
-    
 ]
