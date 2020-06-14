@@ -33,13 +33,6 @@ class Invite_projet_list(ListView):
         #유저의 member_of 필드 참조?
         return user
 
-
-
-
-
-
-
-
 # 프로젝트 목록에서 초대 버튼 클릭시
 @mothod_decorator(login_required, name='dispatch')
 class Invite(View):
