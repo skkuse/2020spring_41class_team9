@@ -8,42 +8,61 @@
 {% block main %}
 <main role="main" class="container content-section center-block">
     <div class="content-section">
-        <h1 class="account-heading">{{ project.name }}</h1>
+        <div class="row">
+        <h4 class="account-heading">{{ project.name }}</h4>
         <!-- TODO: 이름 아래에 목적이랑 기한 등 써넣기 -->
         <!-- TODO: 고정폭 대략 화면 3/4의 너비 정도로 -->
-        <button type="submit" class="btn btn-primary">Favorite</button>
+        <a class="btn btn-primary ml-auto mr-2" style="height:100%" href="#">Favorite</a>
         <!-- TODO: favorite -->
-        <p class="media-body">
-            <a class="account-heading" href="/developer/{{ project.proposer.uID }}">{{ project.proposer.name }}</a>
-            <div class="text-secondary">{{ project.proposer.email }}</div>
+    </div>
+        <div class="row">
+            <a class="mr-2" href="/developer/{{ project.proposer.uID }}">{{ project.proposer.name }}</a>
+            <div class="text">{{ project.proposer.email }}</div>
             <!-- TODO: 링크 걸기, 크기 작게, 한 줄로 만들기 -->
-        </p>
+        </div>
     </div>
     <div class="content-section">
         <fieldset class="form-group">
-            <legend class="border-bottom mb-4">프로젝트 정보</legend>
             <div>
-                <p class="article-content">purpose</p>
-                <p class="article-content">{{ project.purpose}}</p>
+                    <legend class="border-bottom mb-4">프로젝트 정보
+                    </legend>
+        </div>
+            <div>
+                <div>
+                    <p class="article-content">목적:  {{ project.purpose}}</p>
+                </div>
             </div>
             <div>
-                <p class="article-content">expected output: </p>
-                <p class="article-content">{{ project.output }}</p>
+                <p class="article-content">상세 설명:  {{ project.detailed_info}}</p>
             </div>
-            <p class="article-content">{{ project.duration }}</p>
+            <div>
+                <p class="article-content">예상 결과:  {{ project.output }}</p>
+            </div>
+            <p class="article-content">예상 활동 기간:  {{ project.duration }}</p>
+            <p class="article-content ml-auto">Status:  {{ project.status }}</p>
+            <div class="row ">
+                <p class="media-content-section ml-2">현재 구성원: </p>
+                {%for dev in project.participating_projects.all %}
+                <a class="media-content-section ml-1" href="/developer/{{ dev.pk }}">{{ dev.name }}</a>
+                {% endfor %}
+            </div>
             <!-- TODO: 정보 정렬 -->
         </fieldset>
     </div>
     <div class="content-section">
         {% for comment in project.comments.all %}
-        <div>{{ comment.text }}</div>
+        <div class="row border-bottom mb-4">
+        <div class>{{ comment.text}}</div>
         <!-- TODO: 코멘트 양식 -->
+        <div class="ml-auto mr-3">{{comment.author.name}}</div>
+        <div>{{comment.sent_time}}</div>
+        </div>
         {% endfor %}
         {% if user.is_authenticated %}
         <form action="/project/{{ project.pk }}/comment" method="POST" class="post-form">
             {% csrf_token %}
             <input type="text" name="text" style="">
-            <button type="submit" class="save btn btn-default">Add comment</button>
+            <button type="submit" class="save btn btn-success btn-default">Add comment</button>
         </form>
         {% else %}
             <p>댓글을 남기시려면 <a href="/login">로그인</a>해주세요.</p>

@@ -18,10 +18,10 @@
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
             <article class="media content-section">
                 <div class="media-body">
-                    <div class="article-metadata">
+                    <div class="article-metadata " >
                         <a class="mr-2" href="/developer/{{ project.proposer.uID }}">{{ project.proposer.name }}</a>
                         <small class="text-muted">{{ project.created_time }}</small>
-                        <button type="submit" class="btn btn-primary ml-auto">Favorite</button>
+                        <button type="submit" class="btn btn-primary ml-auto float-right">Favorite</button>
                     </div>
                     <h5><a class="article-title" href="/project/{{ project.pID }}">{{ project.name }}</a></h5>
                     <p class="article-content">{{ project.simple_info }}</p>
