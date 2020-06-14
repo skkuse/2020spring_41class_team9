@@ -4,6 +4,7 @@ from django.views.generic.edit import CreateView,UpdateView
 from model.models import Project, Comment, Developer
 from project.form import ProjectPost, CommentPost
 from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_http_methods
 from django.contrib.auth.mixins import UserPassesTestMixin
 
 # Create your views here.
@@ -23,18 +24,6 @@ class ProjectCreateView(CreateView):
         developer.member_of.add(self.object)
         return redirect('/project/' + str(self.object.pID))
 
-@login_required
-def comment(request, projectID):
-
-    if request.method == "POST":
-        form = CommentPost(request.post)
-        form.instance.u_id = request.session['u_id']
-        form.instance.p_id = projectID
-        if form.is_valid():
-            comment = form.save()
-    
-    return redirect('/project/'+str(projectID))
-
 class ProjectUpdateView(UserPassesTestMixin,UpdateView):
     model = Project
     fields = ['name', 'purpose', 'output', 'status', 'duration', 'simple_info', 'detailed_info',]
@@ -52,5 +41,14 @@ class ProjectUpdateView(UserPassesTestMixin,UpdateView):
         proj = self.get_object()
         return self.request.user == proj.proposer
 
-    
-    
+@login_required
+@require_http_methods(["POST"])
+def comment(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+    auther = get_object_or_404(Developer, pk=request.user.uID)
+    form = CommentPost(request.POST)
+    form.instance.author = auther
+    form.instance.project = project
+    if form.is_valid():
+        comment = form.save()
+    return redirect('/project/'+str(pk))

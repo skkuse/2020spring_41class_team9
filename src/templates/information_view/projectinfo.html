@@ -1,19 +1,53 @@
-{% extends "authentication/base1.html" %}
+{% extends "base.html" %}
 {% load crispy_forms_tags %}
-{% block content %}
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+{% block main %}
+<main role="main" class="container content-section center-block">
     <div class="content-section">
-      <div class="media">
-        <div class="media-body">
-          <h2 class="account-heading">{{ project_info.proposer }}</h2>
-{#          <p class="text-secondary">{{ user.email }}</p>                  #}
-{#        <button type="submit" class="btn btn-primary">Favorite</button>   #}
-        </div>
+        <h1 class="account-heading">{{ project.name }}</h1>
+        <!-- TODO: 이름 아래에 목적이랑 기한 등 써넣기 -->
+        <!-- TODO: 고정폭 대략 화면 3/4의 너비 정도로 -->
+        <button type="submit" class="btn btn-primary">Favorite</button>
+        <!-- TODO: favorite -->
+        <p class="media-body">
+            <a class="account-heading" href="/developer/{{ project.proposer.uID }}">{{ project.proposer.name }}</a>
+            <div class="text-secondary">{{ project.proposer.email }}</div>
+            <!-- TODO: 링크 걸기, 크기 작게, 한 줄로 만들기 -->
+        </p>
     </div>
-    <fieldset class="form-group">
-        <legend class="border-bottom mb-4">프로젝트 정보</legend>
-            <p class="article-content">purpose: {{ project_info.purpose}}</p>
-            <p class="article-content">expected output: </p>
-            <p class="article-content">{{ project_info.output }}</p>
-    </fieldset>
+    <div class="content-section">
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">프로젝트 정보</legend>
+            <div>
+                <p class="article-content">purpose</p>
+                <p class="article-content">{{ project.purpose}}</p>
+            </div>
+            <div>
+                <p class="article-content">expected output: </p>
+                <p class="article-content">{{ project.output }}</p>
+            </div>
+            <p class="article-content">{{ project.duration }}</p>
+            <!-- TODO: 정보 정렬 -->
+        </fieldset>
     </div>
-{% endblock content %}
+    <div class="content-section">
+        {% for comment in project.comments.all %}
+        <div>{{ comment.text }}</div>
+        <!-- TODO: 코멘트 양식 -->
+        {% endfor %}
+        {% if user.is_authenticated %}
+        <form action="/project/{{ project.pk }}/comment" method="POST" class="post-form">
+            {% csrf_token %}
+            <input type="text" name="text" style="">
+            <button type="submit" class="save btn btn-default">Add comment</button>
+        </form>
+        {% else %}
+            <p>댓글을 남기시려면 <a href="/login">로그인</a>해주세요.</p>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}
