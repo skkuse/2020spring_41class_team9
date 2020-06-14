@@ -1,19 +1,16 @@
-{% extends "authentication/base1.html" %}
-{% load crispy_forms_tags %}
+{% extends "base.html" %}
+
 {% block content %}
-    <div class="content-section">
-      <div class="media">
-        <div class="media-body">
-          <h2 class="account-heading">{{ project_info.proposer }}</h2>
-{#          <p class="text-secondary">{{ user.email }}</p>                  #}
-{#        <button type="submit" class="btn btn-primary">Favorite</button>   #}
-        </div>
+    
+    <div>
+        <p class="article-content">purpose:</p>
+        <p class="article-content">{{ project_info.purpose }}</p>
+        <p class="article-content">expected output: </p>
+        <p class="article-content">{{ project_info.output }}</p>
     </div>
-    <fieldset class="form-group">
-        <legend class="border-bottom mb-4">프로젝트 정보</legend>
-            <p class="article-content">purpose: {{ project_info.purpose}}</p>
-            <p class="article-content">expected output: </p>
-            <p class="article-content">{{ project_info.output }}</p>
-    </fieldset>
-    </div>
+
+    <h1>{{project_info.project_name}}</h1>
+    
+
+
 {% endblock content %}
