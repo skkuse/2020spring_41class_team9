@@ -13,7 +13,7 @@
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
-                    <a class="nav-item nav-link" href="/mypage/notifications">{{ user.notification_set }} Notification</a>
+                    <a class="nav-item nav-link" href="/mypage/notifications">{{ user.notifications.all.count }} Notification(s)</a>
                     <span class="nav-item nav-link">|</span>
                     <a class="nav-item nav-link" href="/developer/{{ user.pk }}/edit">Profile 수정</a>
                     <span class="nav-item nav-link">|</span>
