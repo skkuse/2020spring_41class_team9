@@ -17,16 +17,23 @@
                     {% if developer != user %}
                     <a href="{% url 'follow' developer.uID %}" class="btn-ff {%if developer in user.follow.all %} active {%endif%}">follow</a>
                     {% endif %}
-                    <a href="{% url 'inv_projects' developer.uID%}">초대</a>
             </div>
         </div>
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">프로필 정보</legend>
-            <p class="article-content">Portfolio: {{ developer.portfolio }}</p>
+            <p class="article-content">학과: </p>
+            <p class="article-content">{{ developer.major }}</p>
+            <p class="article-content">Portfolio: </p>
+            <p class="article-content">{{ developer.portfolio }}</p>
+            <p class="article-content">사용 언어: </p>
+            <p class="article-content">{{ developer.languages }}</p>
+            
             <p class="article-content">Projects: </p>
             {% for participating_project in developer.member_of.all %}
+            <div class="row">
                 <a href="project/{{ participating_project.pID }}">{{ participating_project.name }}</a>
                 <!-- TODO: 프로젝트 참여 정보 간단히 -->
+            </div>
             {% empty %}
             <div>
                 아무 프로젝트에도 참여하지 않고 있습니다.
