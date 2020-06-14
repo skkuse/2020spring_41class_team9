@@ -9,7 +9,7 @@ class ProjectFilter(BaseFilter):
     }
 class ProjectSearchList(SearchListView):
     model = Project
-    paginate_by =10
+    paginate_by =9
     template_name= "searchProject/project.html"
     form_class = ProjectSearchForm
     filter_class = ProjectFilter

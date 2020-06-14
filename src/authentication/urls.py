@@ -24,5 +24,7 @@ urlpatterns = [
     path('signup', UserRegistrationView.as_view()),
     path('login', UserLoginView.as_view()),
     path('logout', UserLogoutView.as_view()),
+    path('mypage/notifications', NotificationListView.as_view()),
+    path('verifyemail', views.verifyemail),
     path('', views.mainpage),
 ]

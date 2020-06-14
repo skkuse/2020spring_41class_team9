@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+
 {% block header %}
 {% include 'header.html' %}
 {% endblock %}
@@ -7,31 +8,19 @@
 {% block main %}
 <main role="main" class="container center-block">
     <div class="row">
-        <form class="form-inline ml-auto" action="" method="GET">
-            {{ form|crispy }}
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </div>
-    <div class="row">
-        {% for developer in page_obj %}
+        {% for notification in page_obj %}
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
             <article class="media content-section">
                 <div class="media-body">
-                    <div class="article-metadata">
-                        <form class="form-inline">
-                            <a class="mr-2" href="#">{{ developer.profile_image_path }}</a>
-                            <h3 class="text-muted">{{ developer.name }}</h3>
-                            <button type="submit" class="btn btn-primary ml-auto">Follow</button>
-                        </form>
-                    </div>
-                    <p class="article-content">{{ developer.portfolio }}</p>
-                    <p class="article-content">{{developer.proposed_projects}}</p>
+                    <p class="">{{ notification.text }}</p>
+                    <p class="">{{ notification.text }}</p>
+                    <!-- TODO: apply style -->
                 </div>
             </article>
         </div>
         {% empty %}
         <div>
-            Empty Result.
+            No notification available.
         </div>
         {% endfor %}
     </div>

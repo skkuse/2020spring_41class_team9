@@ -24,6 +24,7 @@ class ProjectCreateView(CreateView):
         developer.member_of.add(self.object)
         return redirect('/project/' + str(self.object.pID))
 
+@method_decorator(login_required, name='dispatch')
 class ProjectUpdateView(UserPassesTestMixin,UpdateView):
     model = Project
     fields = ['name', 'purpose', 'output', 'status', 'duration', 'simple_info', 'detailed_info',]

@@ -9,7 +9,7 @@ class DeveloperFilter(BaseFilter):
     }
 class DeveloperSearchList(SearchListView):
     model = Developer
-    paginate_by =10
+    paginate_by =9
     template_name= "searchDeveloper/developer.html"
     form_class = DeveloperSearchForm
     filter_class = DeveloperFilter

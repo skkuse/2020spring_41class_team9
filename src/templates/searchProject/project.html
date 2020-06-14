@@ -38,25 +38,33 @@
 
     <div class="row center-block">
         <ul class="pagination center-block ml-auto mr-auto">
-            <li><span class="page-link" href="?page=1">First</span></li>
+            {% if page_obj.has_previous %}
+            <li><a class="page-link" href="?page=1">First</a></li>
+            {% else %}
+            <li><span class="page-link">First</span></li>
+            {% endif %}
 
             {% if page_obj.has_previous %}
-            <li class="page-item"><span class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</span></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
             <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
             {% else %}
-            <li class="page-item disabled"><span class="page-link" href="?page=#">Previous</span></li>
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
             {% endif %}
 
             <li class="page-item active"><span class="page-link">{{ page_obj.number }}<span class="sr-only">(current)</span></span></li>
 
             {% if page_obj.has_next %}
             <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
-            <li class="page-item"><span class="page-link" href="?page={{ page_obj.next_page_number }}">Next</span></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
             {% else %}
-            <li class="page-item disabled"><span class="page-link" href="?page=#">Next</span></li>
+            <li class="page-item disabled"><span class="page-link">Next</span></li>
             {% endif %}
 
+            {% if page_obj.has_next %}
             <li><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+            {% else %}
+            <li><span class="page-link">Last</span></li>
+            {% endif %}
         </ul>
     </div>
 </main>
